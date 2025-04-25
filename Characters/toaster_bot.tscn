@@ -1,7 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://c14mwuyiido1d"]
+[gd_scene load_steps=12 format=3 uid="uid://c14mwuyiido1d"]
 
 [ext_resource type="Script" uid="uid://cpx0a0w0rukqw" path="res://Characters/toaster_bot.gd" id="1_qri20"]
 [ext_resource type="Texture2D" uid="uid://c3yajkoo1p1p5" path="res://Assets/Toaster Bot/idle.png" id="2_jy0k6"]
+[ext_resource type="Shader" uid="uid://cewkp82msxu6d" path="res://Characters/stun_shader.gdshader" id="2_xaau7"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s30en"]
+shader = ExtResource("2_xaau7")
+shader_parameter/flash_color = Vector3(1, 1, 0.2)
+shader_parameter/flash_strength = 1.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xaau7"]
 atlas = ExtResource("2_jy0k6")
@@ -58,6 +64,7 @@ collision_mask = 11
 script = ExtResource("1_qri20")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_s30en")
 sprite_frames = SubResource("SpriteFrames_dut82")
 animation = &"Idle"
 frame_progress = 0.19494
@@ -66,3 +73,13 @@ offset = Vector2(7, -0.5)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-2, 0)
 shape = SubResource("CapsuleShape2D_38gu3")
+
+[node name="StunTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="StunShaderTimer" type="Timer" parent="."]
+wait_time = 0.2
+
+[connection signal="timeout" from="StunTimer" to="." method="_on_stun_timer_timeout"]
+[connection signal="timeout" from="StunShaderTimer" to="." method="_on_stun_shader_timer_timeout"]

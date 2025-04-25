@@ -2,7 +2,7 @@ extends PlatformerController2D
 
 signal DashEnded
 
-@export var charge_time: float = 5
+@export var charge_time: float = 3
 
 @onready var physics_collision_shape_2d: CollisionShape2D = $PhysicsCollisionShape2D
 @onready var dash_collision_shape: CollisionShape2D = $DashCollisionArea/DashCollisionShape
@@ -12,12 +12,12 @@ signal DashEnded
 @onready var grabber_gun_l: Area2D = $GrabberGun_L
 
 @onready var charged_shot_timer: Timer = $ChargedShotTimer
-@onready var charging_progress: TextureProgressBar = $ChargingProgress
+@onready var charging_progress_indicator: TextureProgressBar = $ChargingProgressIndicator
 
 @onready var dash_cooldown_timer: Timer = $DashCooldownTimer
 @onready var dash_duration_timer: Timer = $DashDurationTimer
 
-var wants_to_dash: bool = false
+#var wants_to_dash: bool = false
 var is_dashing: bool = false
 var dash_force: int = 2000
 var dash_friction: int = 0.1
@@ -39,7 +39,7 @@ var active_gun:
 		return active_gun
 
 func _ready() -> void:
-	charging_progress.visible = false
+	charging_progress_indicator.visible = false
 	grabber_gun_r.visible = false
 	grabber_gun_l.visible = false
 	dash_collision_shape.set_deferred("disabled", true)
@@ -77,11 +77,8 @@ func _physics_process(delta):
 	_was_on_ground = is_feet_on_ground()
 	
 	if not charged_shot_timer.is_stopped():
-		charging_progress.value = remap((charged_shot_timer.wait_time - charged_shot_timer.time_left), 0, charged_shot_timer.wait_time, 0, 100)
+		charging_progress_indicator.value = remap((charged_shot_timer.wait_time - charged_shot_timer.time_left), 0, charged_shot_timer.wait_time, 0, 100)
 	
-	if wants_to_dash and dash_cooldown_timer.is_stopped():
-		dash()
-		
 	if is_dashing:
 		velocity.x *= 1/(1 + (delta * dash_friction))
 		#velocity.y *= 1/(1 + (delta * dash_friction))
@@ -122,7 +119,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			var grabbed_enemy = active_gun.scan_and_grab()
 			if grabbed_enemy:
 				charged_shot_timer.start()
-				charging_progress.visible = true
+				charging_progress_indicator.visible = true
 			
 			
 			
@@ -133,19 +130,18 @@ func _unhandled_input(event: InputEvent) -> void:
 		if active_gun.has_enemy:
 			print(charged_shot_timer.time_left)
 			#if timer ran out already
-			if charged_shot_timer.is_stopped():
-				active_gun.shoot(0)
-			else:
-				active_gun.shoot(charged_shot_timer.time_left, charged_shot_timer.wait_time)
+			#if charged_shot_timer.is_stopped():
+				#active_gun.shoot(0)
+			#else:
+			active_gun.shoot(charged_shot_timer.time_left, charged_shot_timer.wait_time)
 			charged_shot_timer.stop()
-			charging_progress.visible = false
+			charging_progress_indicator.visible = false
 
 func dash() -> void:
 	if not dash_cooldown_timer.is_stopped():
 		return
 	is_dashing = true
-	wants_to_dash = false
-	#var aimed_direction = global_position.direction_to(get_global_mouse_position())
+	
 	var aimed_direction:= Vector2.ZERO
 	if animated_sprite_2d.flip_h == true:
 		aimed_direction.x = -1
@@ -169,5 +165,4 @@ func _on_dash_duration_timer_timeout() -> void:
 
 
 func _on_dash_collision_area_body_entered(body: Node2D) -> void:
-	pass
-	body.is_stunned = true
+	body.stun()

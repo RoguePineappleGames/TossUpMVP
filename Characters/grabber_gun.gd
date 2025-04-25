@@ -1,6 +1,6 @@
 extends Area2D
 
-var shoot_force_max: int = 2000
+var shoot_force_max: int = 3000
 var shoot_force_min: int = 1000
 
 var has_enemy:
@@ -31,9 +31,10 @@ func _ready() -> void:
 func scan_and_grab() -> CharacterBody2D:
 	var enemies_in_vicinity = get_overlapping_bodies()
 	if enemies_in_vicinity:
+		#we want to grab first stunned enemy in vicinity
 		for enemy in enemies_in_vicinity:
 			if enemy.is_stunned:
-				enemy.is_grabbed = true
+				enemy.grab()
 				has_enemy = true
 				grabbed_enemy = enemy
 				break
@@ -54,7 +55,7 @@ func shoot(charge_time_left: float, total_charge_time: float):
 	grabbed_enemy.is_thrown = true
 	
 	#lerp expects normalized weight. So divide charge time left by total charge time to normalize
-	#Do 1 - normalized ratio to get correct behavior of low force at high at time left, high force at low time left
+	#Do 1 - normalized ratio to get correct behavior of low force at high time left, high force at low time left
 	var charge_progress = 1 - (charge_time_left/total_charge_time)
 	print("Charge progress: ", charge_progress)
 	var adjusted_shoot_force = lerp(shoot_force_min, shoot_force_max, charge_progress)

@@ -234,14 +234,14 @@ shape = SubResource("RectangleShape2D_55lj8")
 one_shot = true
 
 [node name="DashDurationTimer" type="Timer" parent="."]
-wait_time = 0.23
+wait_time = 0.5
 one_shot = true
 
 [node name="ChargedShotTimer" type="Timer" parent="."]
 wait_time = 5.0
 one_shot = true
 
-[node name="ChargingProgress" type="TextureProgressBar" parent="."]
+[node name="ChargingProgressIndicator" type="TextureProgressBar" parent="."]
 texture_filter = 1
 offset_left = -4.5
 offset_top = -19.5
