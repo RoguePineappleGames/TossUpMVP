@@ -3,6 +3,7 @@ extends PlatformerController2D
 signal DashEnded
 
 @export var charge_time: float = 3
+@export var dash_ghost_scene: PackedScene
 
 @onready var physics_collision_shape_2d: CollisionShape2D = $PhysicsCollisionShape2D
 @onready var dash_collision_shape: CollisionShape2D = $DashCollisionArea/DashCollisionShape
@@ -16,6 +17,9 @@ signal DashEnded
 
 @onready var dash_cooldown_timer: Timer = $DashCooldownTimer
 @onready var dash_duration_timer: Timer = $DashDurationTimer
+@onready var dash_ghost_life_timer: Timer = $DashGhostLifeTimer
+@onready var dash_particles: CPUParticles2D = $DashParticles
+@onready var dash_sfx: AudioStreamPlayer2D = $DashSFX
 
 #var wants_to_dash: bool = false
 var is_dashing: bool = false
@@ -87,16 +91,21 @@ func _physics_process(delta):
 	move_and_slide()
 
 func update_animation() -> void:
+	#if is_dashing:
+		#animated_sprite_2d.play("Dash")
+		
 	if acc.x == 0:
 		animated_sprite_2d.play("Idle")
 
 	elif acc.x > 0:
-		animated_sprite_2d.play("Walk")
+		if !is_dashing:
+			animated_sprite_2d.play("Walk")
 		animated_sprite_2d.flip_h = false
 		active_gun = grabber_gun_r
 
 	elif acc.x < 0:
-		animated_sprite_2d.play("Walk")
+		if !is_dashing:
+			animated_sprite_2d.play("Walk")
 		animated_sprite_2d.flip_h = true
 		active_gun = grabber_gun_l
 	
@@ -128,19 +137,18 @@ func _unhandled_input(event: InputEvent) -> void:
 			return
 			
 		if active_gun.has_enemy:
-			print(charged_shot_timer.time_left)
-			#if timer ran out already
-			#if charged_shot_timer.is_stopped():
-				#active_gun.shoot(0)
-			#else:
 			active_gun.shoot(charged_shot_timer.time_left, charged_shot_timer.wait_time)
 			charged_shot_timer.stop()
 			charging_progress_indicator.visible = false
 
 func dash() -> void:
 	if not dash_cooldown_timer.is_stopped():
+		print("Cooling Down..")
 		return
+	
 	is_dashing = true
+	dash_duration_timer.start()
+	dash_ghost_life_timer.start()
 	
 	var aimed_direction:= Vector2.ZERO
 	if animated_sprite_2d.flip_h == true:
@@ -149,19 +157,37 @@ func dash() -> void:
 		aimed_direction.x = +1
 	
 	velocity = aimed_direction * dash_force
-	dash_duration_timer.start()
 	set_collision_mask_value(3, false)
 	dash_collision_shape.set_deferred("disabled", false)
+	
+	#particles emit opposite of dash direction
+	dash_particles.direction.x = -aimed_direction.x
+	dash_particles.emitting = true
+	dash_sfx.playing = true
+
+	
+
 	
 func _on_dash_end() -> void:
 	is_dashing = false
 	set_collision_mask_value(3, true)
 	dash_collision_shape.set_deferred("disabled", true)
+	dash_particles.emitting = false
 	dash_cooldown_timer.start()
+	dash_ghost_life_timer.stop()
 
+func add_dash_ghost() -> void:
+	var ghost_instance = dash_ghost_scene.instantiate()
+	ghost_instance.set_property(position, scale, animated_sprite_2d.flip_h)
+	get_tree().current_scene.add_child(ghost_instance)
+
+func _on_dash_ghost_life_timer_timeout() -> void:
+	#Keep adding dash ghosts when the timer expires
+	add_dash_ghost()
 
 func _on_dash_duration_timer_timeout() -> void:
-	DashEnded.emit()
+	_on_dash_end()
+	#DashEnded.emit()
 
 
 func _on_dash_collision_area_body_entered(body: Node2D) -> void:
