@@ -1,6 +1,6 @@
 extends Area2D
 
-@onready var grab_particles: CPUParticles2D = $GrabParticles
+#@onready var grab_particles: CPUParticles2D = $GrabParticles
 
 var shoot_force_max: int = 3000
 var shoot_force_min: int = 1000
@@ -25,7 +25,7 @@ var grabbed_enemy:
 		if grabbed_enemy:
 			grabbed_enemy.reparent(self)
 			grabbed_enemy.global_position = lerp(grabbed_enemy.global_position, global_position, 0.5)
-			grab_particles.emitting = true
+			
 		
 	get:
 		return grabbed_enemy
@@ -63,9 +63,9 @@ func shoot(charge_time_left: float, total_charge_time: float):
 	#lerp expects normalized weight. So divide charge time left by total charge time to normalize
 	#Do 1 - normalized ratio to get correct behavior of low force at high time left, high force at low time left
 	var charge_progress = 1 - (charge_time_left/total_charge_time)
-	print("Charge progress: ", charge_progress)
+	#print("Charge progress: ", charge_progress)
 	var adjusted_shoot_force = lerp(shoot_force_min, shoot_force_max, charge_progress)
-	print("Force: ", adjusted_shoot_force)
+	#print("Force: ", adjusted_shoot_force)
 	
 	#Apply throw damage and pass it to enemy throw function
 	var throw_damage = calculate_throw_strength(adjusted_shoot_force)
@@ -80,8 +80,8 @@ func shoot(charge_time_left: float, total_charge_time: float):
 	grabbed_enemy = null
 
 
-func _on_grab_particles_finished() -> void:
-	grab_particles.emitting = false
+#func _on_grab_particles_finished() -> void:
+	#grab_particles.emitting = false
 
 
 

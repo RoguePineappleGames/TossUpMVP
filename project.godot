@@ -19,10 +19,12 @@ config/icon="res://icon.svg"
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
+mouse_cursor/custom_image="uid://biaexihme7ong"
 
 [global_group]
 
 Enemy=""
+ThrownEnemy="Hitbox for enemies that are thrown"
 
 [input]
 

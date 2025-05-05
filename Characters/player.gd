@@ -1,6 +1,7 @@
 extends PlatformerController2D
 
 signal DashEnded
+signal PlayerDied
 
 @export var charge_time: float = 3
 @export var dash_ghost_scene: PackedScene
@@ -26,6 +27,8 @@ var is_dashing: bool = false
 var dash_force: int = 2000
 var dash_friction: int = 0.1
 
+var max_health: int = 3
+var current_health: int = 0
 
 var active_gun: 
 	set(new_value):
@@ -49,6 +52,7 @@ func _ready() -> void:
 	dash_collision_shape.set_deferred("disabled", true)
 	DashEnded.connect(_on_dash_end)
 	charged_shot_timer.wait_time = charge_time
+	current_health = max_health
 	super._ready()
 	
 
@@ -91,8 +95,6 @@ func _physics_process(delta):
 	move_and_slide()
 
 func update_animation() -> void:
-	#if is_dashing:
-		#animated_sprite_2d.play("Dash")
 		
 	if acc.x == 0:
 		animated_sprite_2d.play("Idle")
@@ -145,7 +147,6 @@ func dash() -> void:
 	if not dash_cooldown_timer.is_stopped():
 		print("Cooling Down..")
 		return
-	
 	is_dashing = true
 	dash_duration_timer.start()
 	dash_ghost_life_timer.start()
@@ -165,9 +166,10 @@ func dash() -> void:
 	dash_particles.emitting = true
 	dash_sfx.playing = true
 
-	
+func _on_dash_duration_timer_timeout() -> void:
+	_on_dash_end()
+	#DashEnded.emit()
 
-	
 func _on_dash_end() -> void:
 	is_dashing = false
 	set_collision_mask_value(3, true)
@@ -176,19 +178,31 @@ func _on_dash_end() -> void:
 	dash_cooldown_timer.start()
 	dash_ghost_life_timer.stop()
 
+func _on_dash_ghost_life_timer_timeout() -> void:
+	#Keep adding dash ghosts when the timer expires
+	add_dash_ghost()
+
 func add_dash_ghost() -> void:
 	var ghost_instance = dash_ghost_scene.instantiate()
 	ghost_instance.set_property(position, scale, animated_sprite_2d.flip_h)
 	get_tree().current_scene.add_child(ghost_instance)
 
-func _on_dash_ghost_life_timer_timeout() -> void:
-	#Keep adding dash ghosts when the timer expires
-	add_dash_ghost()
-
-func _on_dash_duration_timer_timeout() -> void:
-	_on_dash_end()
-	#DashEnded.emit()
-
-
 func _on_dash_collision_area_body_entered(body: Node2D) -> void:
 	body.stun()
+
+func adjust_health(amount: int) -> void:
+	#positive amount value for healing
+	#negative amount value for taking damage
+	current_health += amount
+	
+	current_health = clamp(current_health, 0, max_health)
+	
+	if current_health <= 0:
+		die()
+		
+func die() -> void: 
+	print("I, the player, have died")
+	PlayerDied.emit()
+	##Death Animation
+	##Death Sound
+	queue_free()

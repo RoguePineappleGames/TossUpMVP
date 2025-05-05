@@ -10,7 +10,11 @@ signal EnemyThrown(enemy: CharacterBody2D)
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var sprite_shader: ShaderMaterial = animated_sprite_2d.material
 @onready var stun_shader_timer: Timer = $StunShaderTimer
-@onready var grabbed_sfx: AudioStreamPlayer2D = $GrabbedSFX
+
+@onready var grab_particles: CPUParticles2D = $SpecialEffects/GrabParticles
+@onready var grabbed_sfx: AudioStreamPlayer2D = $SpecialEffects/GrabbedSFX
+@onready var stunned_sfx: AudioStreamPlayer2D = $SpecialEffects/StunnedSFX
+@onready var death_sfx: AudioStreamPlayer2D = $SpecialEffects/DeathSFX
 
 var stun_shader_toggle: bool = false
 
@@ -78,8 +82,7 @@ func _physics_process(delta: float) -> void:
 				is_thrown = false
 	else: 
 		move_and_slide()
-		
-	
+
 func stun() -> void:
 	is_stunned = true
 	
@@ -95,7 +98,7 @@ func _on_stunned(enemy: CharacterBody2D) -> void:
 	is_thrown = false
 	stun_timer.start()
 	enable_stun_shader(true)
-	
+	stunned_sfx.playing = true
 	#enable the timer that triggers flashing shader on and off
 	stun_shader_timer.start()
 	stun_shader_timer.one_shot = false
@@ -106,58 +109,53 @@ func _on_grabbed(enemy: CharacterBody2D) -> void:
 	stun_timer.stop()
 	enable_stun_shader(false)
 	rotation_degrees += 90
+	print("Grabbing")
 	grabbed_sfx.playing = true
-	#var grab_tween = get_tree().create_tween()
-	#grab_tween.tween_property()
-	#await grab_tween.finished
-	
-	
+	grab_particles.emitting = true
+
 func _on_thrown(enemy: CharacterBody2D) -> void:
 	is_stunned = false
 	is_grabbed = false
 	stun_timer.stop()
 	enable_stun_shader(false)
-	
-	#var throw_strength = calculate_throw_strength()
-	
-	
-
 
 func enable_stun_shader(enable: bool) -> void:
 	if enable:
 		sprite_shader.set_shader_parameter("flash_strength", 0.4)
 	else:
 		sprite_shader.set_shader_parameter("flash_strength", 1)
-	
-	
 
-func can_kill(damage_amount: int) -> bool: 
+func can_be_killed(damage_amount: int) -> bool: 
 	if damage_amount >= current_health:
+		print("Can kill with ", damage_amount)
 		return true
 	else:
+		print("Cannot kill")
 		return false
 
 func die() -> void: 
 	print("I, ", self, "died")
+	death_sfx.playing = true
+	await death_sfx.finished
 	queue_free()
 
 func _on_stun_timer_timeout() -> void:
 	is_stunned = false
 	enable_stun_shader(false)
-	
 	#disable the repeating timer for the flashing
 	stun_shader_timer.one_shot = true
-
 
 func _on_stun_shader_timer_timeout() -> void:
 	if is_stunned:
 		enable_stun_shader(stun_shader_toggle)
 		stun_shader_toggle = !stun_shader_toggle
 
-
-func _on_hit_box_body_entered(body: Node2D) -> void:
-	if body.is_in_group("Enemy"):
-		if body.can_kill(throw_damage):
-			body.die()
-		else:
-			print("Not enough mf!")
+func _on_hit_box_area_entered(area: Area2D) -> void:
+	if is_thrown:
+		if area.is_in_group("ThrownEnemy"):
+			var enemy = area.get_parent()
+			print("I, ", self, "can be thrown")
+			if enemy.can_be_killed(throw_damage):
+				enemy.die()
+			else:
+				print("Not enough mf!")

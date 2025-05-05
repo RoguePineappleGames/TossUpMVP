@@ -1,9 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://c14mwuyiido1d"]
+[gd_scene load_steps=17 format=3 uid="uid://c14mwuyiido1d"]
 
 [ext_resource type="Script" uid="uid://cpx0a0w0rukqw" path="res://Characters/toaster_bot.gd" id="1_qri20"]
 [ext_resource type="Texture2D" uid="uid://c3yajkoo1p1p5" path="res://Assets/Toaster Bot/idle.png" id="2_jy0k6"]
 [ext_resource type="Shader" uid="uid://cewkp82msxu6d" path="res://Characters/stun_shader.gdshader" id="2_xaau7"]
 [ext_resource type="AudioStream" uid="uid://ck8jk06hdsw3" path="res://Assets/SFX/Grab.wav" id="4_xaau7"]
+[ext_resource type="AudioStream" uid="uid://tbhh05dujyno" path="res://Assets/SFX/DashThrough.wav" id="5_nanaw"]
+[ext_resource type="AudioStream" uid="uid://cbujn8tctmke7" path="res://Assets/SFX/EnemyDeath.wav" id="6_cp6fs"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_s30en"]
 shader = ExtResource("2_xaau7")
@@ -54,14 +56,19 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_38gu3"]
-radius = 6.5
-height = 15.0
+radius = 5.0
+height = 13.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xaau7"]
-radius = 4.5
-height = 9.0
+radius = 7.0
+height = 14.0
 
-[node name="ToasterBot" type="CharacterBody2D"]
+[sub_resource type="Curve" id="Curve_xaau7"]
+_limits = [0.0, 100.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.901639, 12.3596), 0.0, 0.0, 0, 0, Vector2(0.972678, 100), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[node name="ToasterBot" type="CharacterBody2D" groups=["Enemy"]]
 texture_filter = 3
 scale = Vector2(2, 2)
 collision_layer = 4
@@ -86,17 +93,48 @@ one_shot = true
 [node name="StunShaderTimer" type="Timer" parent="."]
 wait_time = 0.2
 
-[node name="GrabbedSFX" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("4_xaau7")
-
-[node name="HitBox" type="Area2D" parent="." groups=["Enemy"]]
+[node name="HitBox" type="Area2D" parent="." groups=["ThrownEnemy"]]
 collision_layer = 16
 collision_mask = 16
 
 [node name="HitBoxCollisionShape" type="CollisionShape2D" parent="HitBox"]
-position = Vector2(-1, 0)
+position = Vector2(-2, 0)
 shape = SubResource("CapsuleShape2D_xaau7")
+
+[node name="SpecialEffects" type="Node" parent="."]
+
+[node name="GrabParticles" type="CPUParticles2D" parent="SpecialEffects"]
+scale = Vector2(2, 2)
+emitting = false
+amount = 50
+lifetime = 0.2
+one_shot = true
+explosiveness = 1.0
+randomness = 0.6
+emission_shape = 1
+emission_sphere_radius = 2.71
+direction = Vector2(0, -1)
+spread = 87.4
+gravity = Vector2(0, 100)
+initial_velocity_min = 100.0
+initial_velocity_max = 100.0
+damping_curve = SubResource("Curve_xaau7")
+scale_amount_max = 1.5
+
+[node name="GrabbedSFX" type="AudioStreamPlayer2D" parent="SpecialEffects"]
+scale = Vector2(2, 2)
+stream = ExtResource("4_xaau7")
+
+[node name="StunnedSFX" type="AudioStreamPlayer2D" parent="SpecialEffects"]
+scale = Vector2(2, 2)
+stream = ExtResource("5_nanaw")
+volume_db = -2.0
+
+[node name="DeathSFX" type="AudioStreamPlayer2D" parent="SpecialEffects"]
+scale = Vector2(2, 2)
+stream = ExtResource("6_cp6fs")
+volume_db = -3.0
 
 [connection signal="timeout" from="StunTimer" to="." method="_on_stun_timer_timeout"]
 [connection signal="timeout" from="StunShaderTimer" to="." method="_on_stun_shader_timer_timeout"]
-[connection signal="body_entered" from="HitBox" to="." method="_on_hit_box_body_entered"]
+[connection signal="area_entered" from="HitBox" to="." method="_on_hit_box_area_entered"]

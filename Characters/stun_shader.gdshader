@@ -8,13 +8,13 @@ void vertex() {
 }
 
 void fragment() {
-	// run on every pixel 
-	
-	//use texture function to read out data of a specific texture. The arguments passed indicate which sprite and position to read out. 
+	// run on every pixel
+
+	//use texture function to read out data of a specific texture. The arguments passed indicate which sprite and position to read out.
 	vec4 input_color = texture(TEXTURE, UV);
-	
+
 	COLOR = mix(vec4(flash_color, input_color.a), input_color, flash_strength);
-	
+
 }
 
 //void light() {

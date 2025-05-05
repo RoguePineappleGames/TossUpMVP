@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dhyi001ccq6n3" path="res://Assets/Bot Wheel/move with FX.png" id="3_v6d5b"]
 [ext_resource type="PackedScene" uid="uid://cdvge3f3l1iks" path="res://Characters/grabber_gun.tscn" id="4_ynroq"]
 [ext_resource type="Texture2D" uid="uid://bjtw2ha1dfwy7" path="res://Assets/ChargingBarUnder.png" id="5_55lj8"]
-[ext_resource type="AudioStream" uid="uid://dohqofov430al" path="res://Assets/SFX/Dash2.wav" id="6_c3bgu"]
+[ext_resource type="AudioStream" uid="uid://bba2wci3xni8n" path="res://Assets/SFX/Dash.wav" id="6_c3bgu"]
 [ext_resource type="Texture2D" uid="uid://gwx4aktpguja" path="res://Assets/ChargingBarProgress.png" id="6_qhb0e"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wbcqo"]
