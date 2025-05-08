@@ -30,8 +30,6 @@ var grabbed_enemy:
 	get:
 		return grabbed_enemy
 
-func _ready() -> void:
-	pass
 
 func scan_and_grab() -> CharacterBody2D:
 	var enemies_in_vicinity = get_overlapping_bodies()
@@ -55,10 +53,6 @@ func scan_and_grab() -> CharacterBody2D:
 
 func shoot(charge_time_left: float, total_charge_time: float):
 	var aimed_direction = global_position.direction_to(get_global_mouse_position())
-	
-	
-	
-	#grabbed_enemy.is_thrown = true
 	
 	#lerp expects normalized weight. So divide charge time left by total charge time to normalize
 	#Do 1 - normalized ratio to get correct behavior of low force at high time left, high force at low time left

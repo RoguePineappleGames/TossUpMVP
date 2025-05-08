@@ -12179,10 +12179,7 @@ tile_set = SubResource("TileSet_3158n")
 [node name="EnemyContainer" type="Node" parent="."]
 
 [node name="ToasterBot" parent="EnemyContainer" instance=ExtResource("3_4k50d")]
-position = Vector2(615, 606)
-
-[node name="ToasterBot2" parent="EnemyContainer" instance=ExtResource("3_4k50d")]
-position = Vector2(664, 605)
+position = Vector2(1020, 607)
 
 [node name="Player" parent="." instance=ExtResource("2_4k50d")]
 position = Vector2(297, 495)
@@ -12199,4 +12196,3 @@ texture = ExtResource("5_ub4j8")
 position = Vector2(640, 359)
 
 [connection signal="EnemyStunned" from="EnemyContainer/ToasterBot" to="." method="_on_toaster_bot_enemy_stunned"]
-[connection signal="EnemyStunned" from="EnemyContainer/ToasterBot2" to="." method="_on_toaster_bot_2_enemy_stunned"]

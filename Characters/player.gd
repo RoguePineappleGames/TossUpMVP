@@ -194,7 +194,7 @@ func adjust_health(amount: int) -> void:
 	#positive amount value for healing
 	#negative amount value for taking damage
 	current_health += amount
-	
+	print("Health changed by ", amount)
 	current_health = clamp(current_health, 0, max_health)
 	
 	if current_health <= 0:
