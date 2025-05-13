@@ -72,3 +72,4 @@ Dash={
 2d_physics/layer_3="Enemies"
 2d_physics/layer_4="Grabber"
 2d_physics/layer_5="ThrownEnemies"
+2d_physics/layer_6="DashingPlayer"

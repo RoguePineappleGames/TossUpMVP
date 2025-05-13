@@ -206,6 +206,7 @@ radius = 5.0
 height = 19.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_55lj8"]
+size = Vector2(12.5, 20)
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 scale = Vector2(2, 2)
@@ -250,7 +251,6 @@ visible = false
 position = Vector2(18, 2)
 
 [node name="PhysicsCollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 shape = SubResource("CapsuleShape2D_1ju47")
 
 [node name="GrabberGun_L" parent="." instance=ExtResource("4_ynroq")]
@@ -258,11 +258,11 @@ visible = false
 position = Vector2(-18, 2)
 
 [node name="DashCollisionArea" type="Area2D" parent="."]
-visible = false
-collision_layer = 0
-collision_mask = 4
+collision_layer = 32
+collision_mask = 5
 
 [node name="DashCollisionShape" type="CollisionShape2D" parent="DashCollisionArea"]
+position = Vector2(-0.25, 0)
 shape = SubResource("RectangleShape2D_55lj8")
 
 [node name="DashCooldownTimer" type="Timer" parent="."]

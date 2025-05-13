@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=4 uid="uid://cw8loaalx4if8"]
+[gd_scene load_steps=11 format=4 uid="uid://cw8loaalx4if8"]
 
 [ext_resource type="Texture2D" uid="uid://bvcfmg6llgy8v" path="res://Assets/AbstractLevels/Tilesheet/tilesheet_complete_2X.png" id="1_00vsl"]
 [ext_resource type="Script" uid="uid://cwlrbum3k2si3" path="res://Levels/test_level.gd" id="1_3158n"]
 [ext_resource type="PackedScene" uid="uid://cefingfw6y2jv" path="res://Characters/Player.tscn" id="2_4k50d"]
 [ext_resource type="PackedScene" uid="uid://c14mwuyiido1d" path="res://Characters/toaster_bot.tscn" id="3_4k50d"]
+[ext_resource type="PackedScene" uid="uid://buwwt7entjhh6" path="res://Characters/shielder.tscn" id="4_7e6fp"]
 [ext_resource type="PackedScene" uid="uid://dhlkgcufm8l0s" path="res://Other/ghost.tscn" id="5_pvdih"]
 [ext_resource type="Texture2D" uid="uid://biaexihme7ong" path="res://Assets/Crosshair.png" id="5_ub4j8"]
 [ext_resource type="PackedScene" uid="uid://dpl5rs8wgfeiv" path="res://Levels/ScreenCamera.tscn" id="6_ub4j8"]
@@ -12179,10 +12180,13 @@ tile_set = SubResource("TileSet_3158n")
 [node name="EnemyContainer" type="Node" parent="."]
 
 [node name="ToasterBot" parent="EnemyContainer" instance=ExtResource("3_4k50d")]
-position = Vector2(1020, 607)
+position = Vector2(696, 589)
+
+[node name="ShielderBot" parent="EnemyContainer" instance=ExtResource("4_7e6fp")]
+position = Vector2(914, 387)
 
 [node name="Player" parent="." instance=ExtResource("2_4k50d")]
-position = Vector2(297, 495)
+position = Vector2(616, 526)
 dash_ghost_scene = ExtResource("5_pvdih")
 max_acceleration = 8000
 

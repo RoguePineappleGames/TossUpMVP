@@ -188,7 +188,8 @@ func add_dash_ghost() -> void:
 	get_tree().current_scene.add_child(ghost_instance)
 
 func _on_dash_collision_area_body_entered(body: Node2D) -> void:
-	body.stun()
+	if body.is_in_group("Enemy"):
+		body.stun()
 
 func adjust_health(amount: int) -> void:
 	#positive amount value for healing
