@@ -70,6 +70,7 @@ _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.901639, 12.3596), 0.0, 0.0, 0,
 point_count = 3
 
 [node name="ToasterBot" type="CharacterBody2D" groups=["Enemy"]]
+z_index = 1
 texture_filter = 3
 scale = Vector2(2, 2)
 collision_layer = 4

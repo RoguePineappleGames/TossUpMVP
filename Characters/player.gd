@@ -76,7 +76,7 @@ func _physics_process(delta):
 			jump()
 	
 	var gravity = apply_gravity_multipliers_to(default_gravity)
-	acc.y = gravity
+	#acc.y = gravity
 	
 	# Apply friction
 	velocity.x *= 1 / (1 + (delta * friction))

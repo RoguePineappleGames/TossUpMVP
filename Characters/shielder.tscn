@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://buwwt7entjhh6"]
+[gd_scene load_steps=11 format=3 uid="uid://buwwt7entjhh6"]
 
 [ext_resource type="Script" uid="uid://dc86janl2vol" path="res://Characters/shielder.gd" id="1_i0eap"]
 [ext_resource type="Shader" uid="uid://cewkp82msxu6d" path="res://Characters/stun_shader.gdshader" id="2_d3m2v"]
@@ -8,6 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://cbujn8tctmke7" path="res://Assets/SFX/EnemyDeath.wav" id="6_5xsv1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ixblb"]
+resource_local_to_scene = true
 shader = ExtResource("2_d3m2v")
 shader_parameter/flash_color = Vector3(1, 1, 0.2)
 shader_parameter/flash_strength = 1.0
@@ -32,10 +33,8 @@ _limits = [0.0, 100.0, 0.0, 1.0]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.901639, 12.3596), 0.0, 0.0, 0, 0, Vector2(0.972678, 100), 0.0, 0.0, 0, 0]
 point_count = 3
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_d3m2v"]
-radius = 11.0
-
 [node name="ShielderBot" type="CharacterBody2D" groups=["Enemy"]]
+z_index = 1
 scale = Vector2(3, 3)
 collision_layer = 4
 collision_mask = 11
@@ -104,9 +103,8 @@ volume_db = -3.0
 collision_layer = 16
 collision_mask = 16
 
-[node name="ThrowHitBoxCollisionShape" type="CollisionShape2D" parent="ThrowHitBox"]
-position = Vector2(0, -5)
-shape = SubResource("CircleShape2D_d3m2v")
+[node name="ThrowHitBoxCollisionShape" type="CollisionPolygon2D" parent="ThrowHitBox"]
+polygon = PackedVector2Array(-3.66667, -14, 1.33333, -14, 1.33333, -2.33333, 10, 5.33333, 10, 5.33333, -12, 5.33333, -11.3333, 4, -7, -1.33333, -4, -3.66667, -3.66667, -6.33333)
 
 [connection signal="timeout" from="StunTimer" to="." method="_on_stun_timer_timeout"]
 [connection signal="timeout" from="StunShaderTimer" to="." method="_on_stun_shader_timer_timeout"]

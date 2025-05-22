@@ -71,11 +71,12 @@ func _ready() -> void:
 	current_health = max_health
 
 func _physics_process(delta: float) -> void:
-	if not is_on_floor() and not is_grabbed:
-		velocity += delta * get_gravity() * 1.3
+	#if not is_on_floor() and not is_grabbed:
+		#velocity += delta * get_gravity() * 1.3
 	
 	if is_grabbed:
 		velocity = Vector2.ZERO
+		move_and_slide()
 		return
 	elif is_stunned:
 		velocity = Vector2.ZERO
@@ -88,16 +89,13 @@ func _physics_process(delta: float) -> void:
 			#print(collision_normal)
 			velocity = velocity.bounce(collision_normal)
 			velocity *= 0.1
+			##is on_floor_only is too slow here, so we check if the collision normal is facing vertically up
+			if collision_normal.y < -0.7:
+				print("We landed on the floor after being thrown")
+				is_thrown = false
+				velocity = Vector2.ZERO
 	else:
 		move_and_slide()
-	
-	#to prevent sliding early, turn off is_thrown after we hit floor
-	if is_on_floor_only():
-	#print("We landed on the floor after being thrown")
-		is_thrown = false
-		velocity = Vector2.ZERO
-
-
 
 
 func stun() -> void:

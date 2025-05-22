@@ -4,7 +4,7 @@ extends Area2D
 
 var direction: int = 1
 var damage: int = 1
-var speed: int = 150
+var speed: int = 220
 
 func _physics_process(delta: float) -> void:
 	global_position.x += speed * direction * delta

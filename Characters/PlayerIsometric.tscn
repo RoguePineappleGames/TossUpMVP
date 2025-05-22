@@ -1,0 +1,292 @@
+[gd_scene load_steps=37 format=3 uid="uid://cl7hl06rnhl0y"]
+
+[ext_resource type="Script" uid="uid://crma7s0q8gpf2" path="res://Characters/player_isometric.gd" id="1_porv4"]
+[ext_resource type="Texture2D" uid="uid://bkyx7ccepvksw" path="res://Assets/Bot Wheel/charge.png" id="2_7pihf"]
+[ext_resource type="Texture2D" uid="uid://cm6du6oam8fgg" path="res://Assets/Bot Wheel/GAS dash FX_edited.png" id="2_nwlvs"]
+[ext_resource type="Texture2D" uid="uid://cv4xpnuhfa6lo" path="res://Assets/Bot Wheel/wake.png" id="2_ynroq"]
+[ext_resource type="Texture2D" uid="uid://dhyi001ccq6n3" path="res://Assets/Bot Wheel/move with FX.png" id="3_v6d5b"]
+[ext_resource type="PackedScene" uid="uid://cdvge3f3l1iks" path="res://Characters/grabber_gun.tscn" id="4_ynroq"]
+[ext_resource type="Texture2D" uid="uid://bjtw2ha1dfwy7" path="res://Assets/ChargingBarUnder.png" id="5_55lj8"]
+[ext_resource type="AudioStream" uid="uid://bba2wci3xni8n" path="res://Assets/SFX/Dash.wav" id="6_c3bgu"]
+[ext_resource type="Texture2D" uid="uid://gwx4aktpguja" path="res://Assets/ChargingBarProgress.png" id="6_qhb0e"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wbcqo"]
+atlas = ExtResource("2_7pihf")
+region = Rect2(9, 0, 32, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x870h"]
+atlas = ExtResource("2_7pihf")
+region = Rect2(9, 26, 32, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2grho"]
+atlas = ExtResource("2_7pihf")
+region = Rect2(9, 52, 32, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icbm8"]
+atlas = ExtResource("2_7pihf")
+region = Rect2(9, 78, 32, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u0thl"]
+atlas = ExtResource("2_nwlvs")
+region = Rect2(0, 0, 101, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j4b6j"]
+atlas = ExtResource("2_nwlvs")
+region = Rect2(0, 26, 101, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r0712"]
+atlas = ExtResource("2_nwlvs")
+region = Rect2(0, 52, 101, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uigg4"]
+atlas = ExtResource("2_nwlvs")
+region = Rect2(0, 78, 101, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bhl4u"]
+atlas = ExtResource("2_nwlvs")
+region = Rect2(0, 130, 101, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e8wfh"]
+atlas = ExtResource("2_nwlvs")
+region = Rect2(0, 156, 101, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_is2h6"]
+atlas = ExtResource("2_nwlvs")
+region = Rect2(0, 104, 101, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_55lj8"]
+atlas = ExtResource("2_ynroq")
+region = Rect2(7, 104, 32, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qhb0e"]
+atlas = ExtResource("2_ynroq")
+region = Rect2(7, 78, 32, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7pihf"]
+atlas = ExtResource("2_ynroq")
+region = Rect2(7, 52, 32, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c3bgu"]
+atlas = ExtResource("3_v6d5b")
+region = Rect2(7, 0, 32, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nwlvs"]
+atlas = ExtResource("3_v6d5b")
+region = Rect2(7, 26, 32, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x35ji"]
+atlas = ExtResource("3_v6d5b")
+region = Rect2(7, 52, 32, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o8u7c"]
+atlas = ExtResource("3_v6d5b")
+region = Rect2(7, 78, 32, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lli6r"]
+atlas = ExtResource("3_v6d5b")
+region = Rect2(7, 104, 32, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7wf5q"]
+atlas = ExtResource("3_v6d5b")
+region = Rect2(7, 130, 32, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r52jx"]
+atlas = ExtResource("3_v6d5b")
+region = Rect2(7, 156, 32, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ijtlc"]
+atlas = ExtResource("3_v6d5b")
+region = Rect2(7, 182, 32, 26)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wbcqo"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wbcqo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x870h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2grho")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_icbm8")
+}],
+"loop": true,
+"name": &"Charging",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u0thl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j4b6j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r0712")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uigg4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bhl4u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e8wfh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_is2h6")
+}],
+"loop": false,
+"name": &"Dash",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_55lj8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qhb0e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7pihf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7pihf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qhb0e")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c3bgu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nwlvs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x35ji")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o8u7c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lli6r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7wf5q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r52jx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ijtlc")
+}],
+"loop": true,
+"name": &"Walk",
+"speed": 8.0
+}]
+
+[sub_resource type="Curve" id="Curve_nwlvs"]
+_limits = [0.0, 100.0, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.826816, 14.6067), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_7pihf"]
+colors = PackedColorArray(0.705882, 0.054902, 0.47451, 1, 1, 1, 1, 0)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_porv4"]
+radius = 4.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_55lj8"]
+size = Vector2(12.5, 20)
+
+[node name="PlayerIsometric" type="CharacterBody2D" groups=["Player"]]
+scale = Vector2(2, 2)
+collision_layer = 2
+collision_mask = 13
+script = ExtResource("1_porv4")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_wbcqo")
+animation = &"Walk"
+
+[node name="DashParticles" type="CPUParticles2D" parent="."]
+position = Vector2(2, 4.5)
+emitting = false
+amount = 300
+lifetime = 0.5
+explosiveness = 0.5
+direction = Vector2(-1, 0)
+spread = 25.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 200.0
+initial_velocity_max = 200.0
+linear_accel_min = 100.0
+linear_accel_max = 100.0
+damping_max = 200.0
+damping_curve = SubResource("Curve_nwlvs")
+scale_amount_min = 3.0
+scale_amount_max = 3.0
+color = Color(0.760784, 0.709804, 1, 1)
+color_ramp = SubResource("Gradient_7pihf")
+
+[node name="DashSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_c3bgu")
+
+[node name="GrabberGun_R" parent="." instance=ExtResource("4_ynroq")]
+visible = false
+position = Vector2(18, 2)
+
+[node name="PhysicsCollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 6.5)
+shape = SubResource("CircleShape2D_porv4")
+
+[node name="GrabberGun_L" parent="." instance=ExtResource("4_ynroq")]
+visible = false
+position = Vector2(-18, 2)
+
+[node name="DashCollisionArea" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 5
+
+[node name="DashCollisionShape" type="CollisionShape2D" parent="DashCollisionArea"]
+position = Vector2(-0.25, 0)
+shape = SubResource("RectangleShape2D_55lj8")
+
+[node name="DashCooldownTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="DashDurationTimer" type="Timer" parent="."]
+wait_time = 0.25
+one_shot = true
+
+[node name="ChargedShotTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="DashGhostLifeTimer" type="Timer" parent="."]
+wait_time = 0.05
+
+[node name="ChargingProgressIndicator" type="TextureProgressBar" parent="."]
+visible = false
+texture_filter = 1
+offset_left = -4.5
+offset_top = -19.5
+offset_right = 11.5
+offset_bottom = -3.5
+scale = Vector2(0.5, 0.5)
+fill_mode = 3
+texture_under = ExtResource("5_55lj8")
+texture_progress = ExtResource("6_qhb0e")
+
+[connection signal="body_entered" from="DashCollisionArea" to="." method="_on_dash_collision_area_body_entered"]
+[connection signal="timeout" from="DashDurationTimer" to="." method="_on_dash_duration_timer_timeout"]
+[connection signal="timeout" from="DashGhostLifeTimer" to="." method="_on_dash_ghost_life_timer_timeout"]

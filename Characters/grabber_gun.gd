@@ -25,8 +25,6 @@ var grabbed_enemy:
 		if grabbed_enemy:
 			grabbed_enemy.reparent(self)
 			grabbed_enemy.global_position = lerp(grabbed_enemy.global_position, global_position, 0.5)
-			
-		
 	get:
 		return grabbed_enemy
 
@@ -38,8 +36,9 @@ func scan_and_grab() -> CharacterBody2D:
 		for enemy in enemies_in_vicinity:
 			if enemy.is_stunned:
 				enemy.grab()
-				has_enemy = true
-				grabbed_enemy = enemy
+				if enemy.is_grabbed:
+					has_enemy = true
+					grabbed_enemy = enemy
 				break
 			else:
 				continue
@@ -72,11 +71,6 @@ func shoot(charge_time_left: float, total_charge_time: float):
 	grabbed_enemy.reparent(get_tree().root)
 	has_enemy = false
 	grabbed_enemy = null
-
-
-#func _on_grab_particles_finished() -> void:
-	#grab_particles.emitting = false
-
 
 
 func calculate_throw_strength(force: float):
