@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://buwwt7entjhh6"]
+[gd_scene load_steps=13 format=3 uid="uid://buwwt7entjhh6"]
 
 [ext_resource type="Script" uid="uid://dc86janl2vol" path="res://Characters/shielder.gd" id="1_i0eap"]
 [ext_resource type="Shader" uid="uid://cewkp82msxu6d" path="res://Characters/stun_shader.gdshader" id="2_d3m2v"]
 [ext_resource type="Texture2D" uid="uid://bjs3kgkwbaetp" path="res://Assets/shield droid/Shielded_edited.png" id="2_whnwo"]
+[ext_resource type="Texture2D" uid="uid://c6qt2cab2o7tb" path="res://Assets/Enemies/Blockoid.png" id="3_q7ni7"]
 [ext_resource type="AudioStream" uid="uid://ck8jk06hdsw3" path="res://Assets/SFX/Grab.wav" id="4_q7ni7"]
 [ext_resource type="AudioStream" uid="uid://tbhh05dujyno" path="res://Assets/SFX/DashThrough.wav" id="5_pdfdr"]
 [ext_resource type="AudioStream" uid="uid://cbujn8tctmke7" path="res://Assets/SFX/EnemyDeath.wav" id="6_5xsv1"]
@@ -13,6 +14,10 @@ shader = ExtResource("2_d3m2v")
 shader_parameter/flash_color = Vector3(1, 1, 0.2)
 shader_parameter/flash_strength = 1.0
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_pdfdr"]
+atlas = ExtResource("3_q7ni7")
+region = Rect2(0, 0, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_3im1y"]
 atlas = ExtResource("2_whnwo")
 region = Rect2(0, 0, 24, 23)
@@ -21,10 +26,18 @@ region = Rect2(0, 0, 24, 23)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_3im1y")
+"texture": SubResource("AtlasTexture_pdfdr")
 }],
 "loop": true,
 "name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3im1y")
+}],
+"loop": true,
+"name": &"Idle_Old",
 "speed": 5.0
 }]
 
@@ -35,7 +48,7 @@ point_count = 3
 
 [node name="ShielderBot" type="CharacterBody2D" groups=["Enemy"]]
 z_index = 1
-scale = Vector2(3, 3)
+scale = Vector2(2, 2)
 collision_layer = 4
 collision_mask = 11
 script = ExtResource("1_i0eap")

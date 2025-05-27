@@ -31,7 +31,7 @@ var dash_force: int = 1000
 var dash_friction: int = 0.1
 var dash_direction
 
-var max_health: int = 3
+var max_health: int = 10
 var current_health: int = 0
 
 var active_gun: 

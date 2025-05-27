@@ -99,6 +99,7 @@ func _physics_process(delta: float) -> void:
 			#print(collision_normal)
 			velocity = velocity.bounce(collision_normal)
 			velocity *= 0.1
+			is_thrown = false
 			##is on_floor_only is too slow here, so we check if the collision normal is facing vertically up
 			if collision_normal.y < -0.7:
 				#print("We landed on the floor after being thrown")

@@ -1,9 +1,10 @@
-[gd_scene load_steps=25 format=3 uid="uid://b1u4qvkor56dm"]
+[gd_scene load_steps=28 format=3 uid="uid://b1u4qvkor56dm"]
 
 [ext_resource type="Script" uid="uid://cp2rc5ikuds4f" path="res://Characters/relentless_bot.gd" id="1_rt4ew"]
 [ext_resource type="Shader" uid="uid://cewkp82msxu6d" path="res://Characters/stun_shader.gdshader" id="2_e4umi"]
 [ext_resource type="Texture2D" uid="uid://ckegqj277302b" path="res://Assets/Small Monster/small moidle trimmed.png" id="2_h0spo"]
 [ext_resource type="Texture2D" uid="uid://bi1c3q20hxnov" path="res://Assets/Small Monster/small morun trimmed.png" id="3_e4umi"]
+[ext_resource type="Texture2D" uid="uid://bj28pmjxg3xiq" path="res://Assets/Enemies/Triangloid.png" id="3_m37lg"]
 [ext_resource type="AudioStream" uid="uid://ck8jk06hdsw3" path="res://Assets/SFX/Grab.wav" id="4_m37lg"]
 [ext_resource type="AudioStream" uid="uid://tbhh05dujyno" path="res://Assets/SFX/DashThrough.wav" id="5_aau3p"]
 [ext_resource type="AudioStream" uid="uid://cbujn8tctmke7" path="res://Assets/SFX/EnemyDeath.wav" id="6_f7ibw"]
@@ -13,6 +14,10 @@ resource_local_to_scene = true
 shader = ExtResource("2_e4umi")
 shader_parameter/flash_color = Vector3(1, 1, 0.2)
 shader_parameter/flash_strength = 1.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aau3p"]
+atlas = ExtResource("3_m37lg")
+region = Rect2(0, 0, 33, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_68t38"]
 atlas = ExtResource("2_h0spo")
@@ -37,6 +42,10 @@ region = Rect2(0, 156, 27, 39)
 [sub_resource type="AtlasTexture" id="AtlasTexture_wqxlg"]
 atlas = ExtResource("2_h0spo")
 region = Rect2(0, 195, 27, 39)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e4umi"]
+atlas = ExtResource("3_m37lg")
+region = Rect2(0, 0, 33, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_td4yq"]
 atlas = ExtResource("3_e4umi")
@@ -66,6 +75,14 @@ region = Rect2(0, 195, 27, 39)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_aau3p")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_68t38")
 }, {
 "duration": 1.0,
@@ -84,7 +101,15 @@ animations = [{
 "texture": SubResource("AtlasTexture_wqxlg")
 }],
 "loop": true,
-"name": &"Idle",
+"name": &"Idle_old",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e4umi")
+}],
+"loop": true,
+"name": &"Run",
 "speed": 5.0
 }, {
 "frames": [{
@@ -107,7 +132,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_qm4b4")
 }],
 "loop": true,
-"name": &"Run",
+"name": &"Run_old",
 "speed": 7.0
 }]
 
@@ -125,7 +150,6 @@ radius = 4.5
 height = 14.0
 
 [node name="RelentlessBot" type="CharacterBody2D" groups=["Enemy", "RelentlessBot"]]
-scale = Vector2(4, 4)
 collision_layer = 4
 collision_mask = 3
 script = ExtResource("1_rt4ew")
@@ -135,8 +159,7 @@ texture_filter = 3
 material = SubResource("ShaderMaterial_m37lg")
 position = Vector2(0, -11)
 sprite_frames = SubResource("SpriteFrames_w331x")
-animation = &"Idle"
-frame_progress = 0.756601
+animation = &"Run"
 
 [node name="PhysicsCollisionBox" type="CollisionShape2D" parent="."]
 position = Vector2(0, -7.5)

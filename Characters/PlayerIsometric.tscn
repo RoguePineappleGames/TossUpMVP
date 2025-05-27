@@ -1,8 +1,7 @@
-[gd_scene load_steps=37 format=3 uid="uid://cl7hl06rnhl0y"]
+[gd_scene load_steps=26 format=3 uid="uid://cl7hl06rnhl0y"]
 
 [ext_resource type="Script" uid="uid://crma7s0q8gpf2" path="res://Characters/player_isometric.gd" id="1_porv4"]
-[ext_resource type="Texture2D" uid="uid://bkyx7ccepvksw" path="res://Assets/Bot Wheel/charge.png" id="2_7pihf"]
-[ext_resource type="Texture2D" uid="uid://cm6du6oam8fgg" path="res://Assets/Bot Wheel/GAS dash FX_edited.png" id="2_nwlvs"]
+[ext_resource type="Texture2D" uid="uid://cqck2pkowq637" path="res://Assets/Enemies/Player.png" id="2_pgeca"]
 [ext_resource type="Texture2D" uid="uid://cv4xpnuhfa6lo" path="res://Assets/Bot Wheel/wake.png" id="2_ynroq"]
 [ext_resource type="Texture2D" uid="uid://dhyi001ccq6n3" path="res://Assets/Bot Wheel/move with FX.png" id="3_v6d5b"]
 [ext_resource type="PackedScene" uid="uid://cdvge3f3l1iks" path="res://Characters/grabber_gun.tscn" id="4_ynroq"]
@@ -10,49 +9,9 @@
 [ext_resource type="AudioStream" uid="uid://bba2wci3xni8n" path="res://Assets/SFX/Dash.wav" id="6_c3bgu"]
 [ext_resource type="Texture2D" uid="uid://gwx4aktpguja" path="res://Assets/ChargingBarProgress.png" id="6_qhb0e"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_wbcqo"]
-atlas = ExtResource("2_7pihf")
-region = Rect2(9, 0, 32, 26)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_x870h"]
-atlas = ExtResource("2_7pihf")
-region = Rect2(9, 26, 32, 26)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_2grho"]
-atlas = ExtResource("2_7pihf")
-region = Rect2(9, 52, 32, 26)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_icbm8"]
-atlas = ExtResource("2_7pihf")
-region = Rect2(9, 78, 32, 26)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_u0thl"]
-atlas = ExtResource("2_nwlvs")
-region = Rect2(0, 0, 101, 26)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_j4b6j"]
-atlas = ExtResource("2_nwlvs")
-region = Rect2(0, 26, 101, 26)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_r0712"]
-atlas = ExtResource("2_nwlvs")
-region = Rect2(0, 52, 101, 26)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_uigg4"]
-atlas = ExtResource("2_nwlvs")
-region = Rect2(0, 78, 101, 26)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_bhl4u"]
-atlas = ExtResource("2_nwlvs")
-region = Rect2(0, 130, 101, 26)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_e8wfh"]
-atlas = ExtResource("2_nwlvs")
-region = Rect2(0, 156, 101, 26)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_is2h6"]
-atlas = ExtResource("2_nwlvs")
-region = Rect2(0, 104, 101, 26)
+[sub_resource type="AtlasTexture" id="AtlasTexture_porv4"]
+atlas = ExtResource("2_pgeca")
+region = Rect2(0, 0, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_55lj8"]
 atlas = ExtResource("2_ynroq")
@@ -102,46 +61,11 @@ region = Rect2(7, 182, 32, 26)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_wbcqo")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_x870h")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_2grho")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_icbm8")
+"texture": SubResource("AtlasTexture_porv4")
 }],
 "loop": true,
-"name": &"Charging",
+"name": &"Idle",
 "speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_u0thl")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_j4b6j")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_r0712")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_uigg4")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_bhl4u")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_e8wfh")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_is2h6")
-}],
-"loop": false,
-"name": &"Dash",
-"speed": 7.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -160,7 +84,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_qhb0e")
 }],
 "loop": true,
-"name": &"Idle",
+"name": &"Idle_old",
 "speed": 4.0
 }, {
 "frames": [{
@@ -189,7 +113,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_ijtlc")
 }],
 "loop": true,
-"name": &"Walk",
+"name": &"Walk_old",
 "speed": 8.0
 }]
 
@@ -208,7 +132,6 @@ radius = 4.0
 size = Vector2(12.5, 20)
 
 [node name="PlayerIsometric" type="CharacterBody2D" groups=["Player"]]
-scale = Vector2(2, 2)
 collision_layer = 2
 collision_mask = 13
 script = ExtResource("1_porv4")
@@ -216,7 +139,7 @@ script = ExtResource("1_porv4")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_wbcqo")
-animation = &"Walk"
+animation = &"Idle"
 
 [node name="DashParticles" type="CPUParticles2D" parent="."]
 position = Vector2(2, 4.5)

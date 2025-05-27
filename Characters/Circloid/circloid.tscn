@@ -1,0 +1,123 @@
+[gd_scene load_steps=15 format=3 uid="uid://cfttxpq5xek8o"]
+
+[ext_resource type="Script" uid="uid://dg1t8tiqkccdb" path="res://Characters/Circloid/circloid.gd" id="1_5axse"]
+[ext_resource type="Shader" uid="uid://cewkp82msxu6d" path="res://Characters/stun_shader.gdshader" id="2_1wbyv"]
+[ext_resource type="Texture2D" uid="uid://b8gnk7coqhqjr" path="res://Assets/Enemies/Circloid.png" id="2_b55ny"]
+[ext_resource type="AudioStream" uid="uid://ck8jk06hdsw3" path="res://Assets/SFX/Grab.wav" id="4_d4xg7"]
+[ext_resource type="AudioStream" uid="uid://tbhh05dujyno" path="res://Assets/SFX/DashThrough.wav" id="5_cktnj"]
+[ext_resource type="AudioStream" uid="uid://cbujn8tctmke7" path="res://Assets/SFX/EnemyDeath.wav" id="6_dxjf7"]
+[ext_resource type="Script" uid="uid://cuuyk71gtjjfc" path="res://Characters/CharacterStateMachine.gd" id="7_d4xg7"]
+[ext_resource type="Script" uid="uid://dqrtydhlru1t1" path="res://Characters/Circloid/idle_state.gd" id="8_cktnj"]
+[ext_resource type="Script" uid="uid://b45acj5ewi7en" path="res://Characters/Circloid/roam_state.gd" id="9_qhkhx"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_si521"]
+resource_local_to_scene = true
+shader = ExtResource("2_1wbyv")
+shader_parameter/flash_color = Vector3(1, 1, 0.2)
+shader_parameter/flash_strength = 1.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lrpg6"]
+atlas = ExtResource("2_b55ny")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dapx5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lrpg6")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dvjj8"]
+radius = 13.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qhkhx"]
+size = Vector2(320, 320)
+
+[node name="Circloid" type="CharacterBody2D"]
+position = Vector2(591, 289)
+collision_layer = 4
+collision_mask = 11
+script = ExtResource("1_5axse")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 3
+material = SubResource("ShaderMaterial_si521")
+sprite_frames = SubResource("SpriteFrames_dapx5")
+
+[node name="PhysicsShape" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_dvjj8")
+
+[node name="SpecialEffects" type="Node" parent="."]
+
+[node name="GrabbedSFX" type="AudioStreamPlayer2D" parent="SpecialEffects"]
+scale = Vector2(2, 2)
+stream = ExtResource("4_d4xg7")
+
+[node name="StunnedSFX" type="AudioStreamPlayer2D" parent="SpecialEffects"]
+scale = Vector2(2, 2)
+stream = ExtResource("5_cktnj")
+volume_db = -2.0
+
+[node name="DeathSFX" type="AudioStreamPlayer2D" parent="SpecialEffects"]
+scale = Vector2(2, 2)
+stream = ExtResource("6_dxjf7")
+volume_db = -3.0
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("character", "initial_state")]
+script = ExtResource("7_d4xg7")
+character = NodePath("..")
+initial_state = NodePath("IdleState")
+
+[node name="IdleState" type="Node" parent="StateMachine" node_paths=PackedStringArray("roam_state")]
+script = ExtResource("8_cktnj")
+roam_state = NodePath("../RoamState")
+
+[node name="IdleTimer" type="Timer" parent="StateMachine/IdleState"]
+wait_time = 2.0
+one_shot = true
+
+[node name="RoamState" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state")]
+script = ExtResource("9_qhkhx")
+idle_state = NodePath("../IdleState")
+
+[node name="PatrolArea" type="Area2D" parent="StateMachine/RoamState"]
+position = Vector2(591, 289)
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StateMachine/RoamState/PatrolArea"]
+shape = SubResource("RectangleShape2D_qhkhx")
+
+[node name="PatrolTimer" type="Timer" parent="StateMachine/RoamState"]
+wait_time = 2.0
+one_shot = true
+
+[node name="AttackState" type="Node" parent="StateMachine"]
+
+[node name="StunState" type="Node" parent="StateMachine"]
+
+[node name="StunTimer" type="Timer" parent="StateMachine/StunState"]
+
+[node name="StunShaderTimer" type="Timer" parent="StateMachine/StunState"]
+
+[node name="GrabbedState" type="Node" parent="StateMachine"]
+
+[node name="ThrownState" type="Node" parent="StateMachine"]
+
+[node name="StateLabel" type="Label" parent="."]
+texture_filter = 3
+offset_left = -19.0
+offset_top = -41.0
+offset_right = 29.0
+offset_bottom = -16.0
+theme_override_font_sizes/font_size = 15
+text = "Idle"
+
+[connection signal="timeout" from="StateMachine/IdleState/IdleTimer" to="StateMachine/IdleState" method="_on_idle_timer_timeout"]
+[connection signal="timeout" from="StateMachine/RoamState/PatrolTimer" to="StateMachine/RoamState" method="_on_patrol_timer_timeout"]

@@ -1,8 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://c14mwuyiido1d"]
+[gd_scene load_steps=18 format=3 uid="uid://c14mwuyiido1d"]
 
 [ext_resource type="Script" uid="uid://cpx0a0w0rukqw" path="res://Characters/toaster_bot.gd" id="1_qri20"]
 [ext_resource type="Texture2D" uid="uid://bfscl08asnq0m" path="res://Assets/Toaster Bot/idle_edited.png" id="2_s30en"]
 [ext_resource type="Shader" uid="uid://cewkp82msxu6d" path="res://Characters/stun_shader.gdshader" id="2_xaau7"]
+[ext_resource type="Texture2D" uid="uid://b8gnk7coqhqjr" path="res://Assets/Enemies/Circloid.png" id="3_cp6fs"]
 [ext_resource type="AudioStream" uid="uid://ck8jk06hdsw3" path="res://Assets/SFX/Grab.wav" id="4_xaau7"]
 [ext_resource type="AudioStream" uid="uid://tbhh05dujyno" path="res://Assets/SFX/DashThrough.wav" id="5_nanaw"]
 [ext_resource type="AudioStream" uid="uid://cbujn8tctmke7" path="res://Assets/SFX/EnemyDeath.wav" id="6_cp6fs"]
@@ -12,6 +13,10 @@ resource_local_to_scene = true
 shader = ExtResource("2_xaau7")
 shader_parameter/flash_color = Vector3(1, 1, 0.2)
 shader_parameter/flash_strength = 1.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vdjbx"]
+atlas = ExtResource("3_cp6fs")
+region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nanaw"]
 atlas = ExtResource("2_s30en")
@@ -37,6 +42,14 @@ region = Rect2(80, 0, 20, 22)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_vdjbx")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_nanaw")
 }, {
 "duration": 1.0,
@@ -52,7 +65,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_38gu3")
 }],
 "loop": true,
-"name": &"Idle",
+"name": &"Idle_Old",
 "speed": 5.0
 }]
 
@@ -64,15 +77,9 @@ height = 13.0
 radius = 7.0
 height = 14.0
 
-[sub_resource type="Curve" id="Curve_xaau7"]
-_limits = [0.0, 100.0, 0.0, 1.0]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.901639, 12.3596), 0.0, 0.0, 0, 0, Vector2(0.972678, 100), 0.0, 0.0, 0, 0]
-point_count = 3
-
 [node name="ToasterBot" type="CharacterBody2D" groups=["Enemy"]]
 z_index = 1
 texture_filter = 3
-scale = Vector2(2, 2)
 collision_layer = 4
 collision_mask = 11
 script = ExtResource("1_qri20")
@@ -81,6 +88,7 @@ script = ExtResource("1_qri20")
 material = SubResource("ShaderMaterial_nanaw")
 sprite_frames = SubResource("SpriteFrames_vdjbx")
 animation = &"Idle"
+frame_progress = 0.257474
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_38gu3")
@@ -100,24 +108,6 @@ collision_mask = 16
 shape = SubResource("CapsuleShape2D_xaau7")
 
 [node name="SpecialEffects" type="Node" parent="."]
-
-[node name="GrabParticles" type="CPUParticles2D" parent="SpecialEffects"]
-scale = Vector2(2, 2)
-emitting = false
-amount = 50
-lifetime = 0.2
-one_shot = true
-explosiveness = 1.0
-randomness = 0.6
-emission_shape = 1
-emission_sphere_radius = 2.71
-direction = Vector2(0, -1)
-spread = 87.4
-gravity = Vector2(0, 100)
-initial_velocity_min = 100.0
-initial_velocity_max = 100.0
-damping_curve = SubResource("Curve_xaau7")
-scale_amount_max = 1.5
 
 [node name="GrabbedSFX" type="AudioStreamPlayer2D" parent="SpecialEffects"]
 scale = Vector2(2, 2)
