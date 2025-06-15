@@ -36,9 +36,11 @@ func scan_and_grab() -> CharacterBody2D:
 		for enemy in enemies_in_vicinity:
 			if enemy.is_stunned:
 				enemy.grab()
-				if enemy.is_grabbed:
-					has_enemy = true
-					grabbed_enemy = enemy
+				has_enemy = true
+				grabbed_enemy = enemy
+				#if enemy.is_grabbed:
+					#has_enemy = true
+					#grabbed_enemy = enemy
 				break
 			else:
 				continue
@@ -48,6 +50,7 @@ func scan_and_grab() -> CharacterBody2D:
 			return null
 	
 	else:
+		print("No enemies detected")
 		return null
 
 func shoot(charge_time_left: float, total_charge_time: float):

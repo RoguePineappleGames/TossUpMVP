@@ -16,12 +16,12 @@ func _ready():
 
 # create a custom process function that uses delta. 'delta' is the elapsed time since the previous frame.
 # This is so the process only runs when this is the current state in the character state machine 
-func state_process(delta):
+func state_physics_process(_delta):
 	pass
 
 # create a custom function for input events (as opposed to just using _input() ) 
 # This is so the process only runs when this is the current state in the character state machine 
-func state_input(event: InputEvent):
+func state_input(_event: InputEvent):
 	pass
 
 func on_enter():

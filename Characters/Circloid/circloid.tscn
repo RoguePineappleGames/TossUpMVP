@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cfttxpq5xek8o"]
+[gd_scene load_steps=19 format=3 uid="uid://cfttxpq5xek8o"]
 
 [ext_resource type="Script" uid="uid://dg1t8tiqkccdb" path="res://Characters/Circloid/circloid.gd" id="1_5axse"]
 [ext_resource type="Shader" uid="uid://cewkp82msxu6d" path="res://Characters/stun_shader.gdshader" id="2_1wbyv"]
@@ -8,7 +8,11 @@
 [ext_resource type="AudioStream" uid="uid://cbujn8tctmke7" path="res://Assets/SFX/EnemyDeath.wav" id="6_dxjf7"]
 [ext_resource type="Script" uid="uid://cuuyk71gtjjfc" path="res://Characters/CharacterStateMachine.gd" id="7_d4xg7"]
 [ext_resource type="Script" uid="uid://dqrtydhlru1t1" path="res://Characters/Circloid/idle_state.gd" id="8_cktnj"]
+[ext_resource type="Script" uid="uid://b4jh7sabbrlu8" path="res://Characters/Circloid/attack_state.gd" id="8_clel2"]
 [ext_resource type="Script" uid="uid://b45acj5ewi7en" path="res://Characters/Circloid/roam_state.gd" id="9_qhkhx"]
+[ext_resource type="Script" uid="uid://dh8wiepa7ret3" path="res://Characters/Circloid/stun_state.gd" id="10_lexeh"]
+[ext_resource type="Script" uid="uid://bphppgk4njly5" path="res://Characters/Circloid/grabbed_state.gd" id="11_c40ki"]
+[ext_resource type="Script" uid="uid://cdtlr2kwsfhfs" path="res://Characters/Circloid/thrown_state.gd" id="13_mrohl"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_si521"]
 resource_local_to_scene = true
@@ -34,14 +38,13 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_dvjj8"]
 radius = 13.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_qhkhx"]
-size = Vector2(320, 320)
+[sub_resource type="CircleShape2D" id="CircleShape2D_qhkhx"]
+radius = 30.0
 
-[node name="Circloid" type="CharacterBody2D"]
-position = Vector2(591, 289)
+[node name="Circloid" type="CharacterBody2D" node_paths=PackedStringArray("stun_state") groups=["Enemy"]]
 collision_layer = 4
-collision_mask = 11
 script = ExtResource("1_5axse")
+stun_state = NodePath("StateMachine/StunState")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 3
@@ -51,16 +54,13 @@ sprite_frames = SubResource("SpriteFrames_dapx5")
 [node name="PhysicsShape" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_dvjj8")
 
+[node name="WallCollisionDetector" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallCollisionDetector"]
+shape = SubResource("CircleShape2D_qhkhx")
+
 [node name="SpecialEffects" type="Node" parent="."]
-
-[node name="GrabbedSFX" type="AudioStreamPlayer2D" parent="SpecialEffects"]
-scale = Vector2(2, 2)
-stream = ExtResource("4_d4xg7")
-
-[node name="StunnedSFX" type="AudioStreamPlayer2D" parent="SpecialEffects"]
-scale = Vector2(2, 2)
-stream = ExtResource("5_cktnj")
-volume_db = -2.0
 
 [node name="DeathSFX" type="AudioStreamPlayer2D" parent="SpecialEffects"]
 scale = Vector2(2, 2)
@@ -86,29 +86,48 @@ one_shot = true
 script = ExtResource("9_qhkhx")
 idle_state = NodePath("../IdleState")
 
-[node name="PatrolArea" type="Area2D" parent="StateMachine/RoamState"]
-position = Vector2(591, 289)
-collision_layer = 0
-collision_mask = 4
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StateMachine/RoamState/PatrolArea"]
-shape = SubResource("RectangleShape2D_qhkhx")
-
-[node name="PatrolTimer" type="Timer" parent="StateMachine/RoamState"]
-wait_time = 2.0
+[node name="RoamTimer" type="Timer" parent="StateMachine/RoamState"]
+wait_time = 10.0
 one_shot = true
 
-[node name="AttackState" type="Node" parent="StateMachine"]
+[node name="DirectionSwapTimer" type="Timer" parent="StateMachine/RoamState"]
+wait_time = 4.0
 
-[node name="StunState" type="Node" parent="StateMachine"]
+[node name="AttackState" type="Node" parent="StateMachine"]
+script = ExtResource("8_clel2")
+
+[node name="StunState" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "grabbed_state")]
+script = ExtResource("10_lexeh")
+idle_state = NodePath("../IdleState")
+grabbed_state = NodePath("../GrabbedState")
+can_move = false
+
+[node name="StunnedSFX" type="AudioStreamPlayer2D" parent="StateMachine/StunState"]
+scale = Vector2(2, 2)
+stream = ExtResource("5_cktnj")
 
 [node name="StunTimer" type="Timer" parent="StateMachine/StunState"]
+wait_time = 3.0
+one_shot = true
 
 [node name="StunShaderTimer" type="Timer" parent="StateMachine/StunState"]
+wait_time = 0.2
 
-[node name="GrabbedState" type="Node" parent="StateMachine"]
+[node name="GrabbedState" type="Node" parent="StateMachine" node_paths=PackedStringArray("thrown_state")]
+script = ExtResource("11_c40ki")
+thrown_state = NodePath("../ThrownState")
 
-[node name="ThrownState" type="Node" parent="StateMachine"]
+[node name="GrabbedSFX" type="AudioStreamPlayer2D" parent="StateMachine/GrabbedState"]
+scale = Vector2(2, 2)
+stream = ExtResource("4_d4xg7")
+
+[node name="ThrownState" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state")]
+script = ExtResource("13_mrohl")
+idle_state = NodePath("../IdleState")
+
+[node name="TransitionTimer" type="Timer" parent="StateMachine/ThrownState"]
+wait_time = 0.3
+one_shot = true
 
 [node name="StateLabel" type="Label" parent="."]
 texture_filter = 3
@@ -119,5 +138,10 @@ offset_bottom = -16.0
 theme_override_font_sizes/font_size = 15
 text = "Idle"
 
+[connection signal="body_entered" from="WallCollisionDetector" to="StateMachine/RoamState" method="_on_wall_collision_detector_body_entered"]
 [connection signal="timeout" from="StateMachine/IdleState/IdleTimer" to="StateMachine/IdleState" method="_on_idle_timer_timeout"]
-[connection signal="timeout" from="StateMachine/RoamState/PatrolTimer" to="StateMachine/RoamState" method="_on_patrol_timer_timeout"]
+[connection signal="timeout" from="StateMachine/RoamState/RoamTimer" to="StateMachine/RoamState" method="_on_patrol_timer_timeout"]
+[connection signal="timeout" from="StateMachine/RoamState/DirectionSwapTimer" to="StateMachine/RoamState" method="_on_direction_swap_timer_timeout"]
+[connection signal="timeout" from="StateMachine/StunState/StunTimer" to="StateMachine/StunState" method="_on_stun_timer_timeout"]
+[connection signal="timeout" from="StateMachine/StunState/StunShaderTimer" to="StateMachine/StunState" method="_on_stun_shader_timer_timeout"]
+[connection signal="timeout" from="StateMachine/ThrownState/TransitionTimer" to="StateMachine/ThrownState" method="_on_transition_timer_timeout"]

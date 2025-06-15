@@ -1,14 +1,12 @@
-[gd_scene load_steps=14 format=4 uid="uid://tyohiw8t7shk"]
+[gd_scene load_steps=12 format=4 uid="uid://tyohiw8t7shk"]
 
 [ext_resource type="Script" uid="uid://cbvn1dkeneglm" path="res://Levels/topdown_test_level.gd" id="1_br5ag"]
 [ext_resource type="Texture2D" uid="uid://ci46sqlg7fmfh" path="res://Assets/AbstractLevels/PNG/Tiles/Brown tiles/tileBrown_09.png" id="1_ohsd8"]
 [ext_resource type="PackedScene" uid="uid://cl7hl06rnhl0y" path="res://Characters/PlayerIsometric.tscn" id="2_aeay1"]
 [ext_resource type="Texture2D" uid="uid://coy4luvphhofr" path="res://Assets/AbstractLevels/PNG/Tiles/Brown tiles/tileBrown_23.png" id="2_nsn4m"]
 [ext_resource type="PackedScene" uid="uid://dhlkgcufm8l0s" path="res://Other/ghost.tscn" id="4_br5ag"]
-[ext_resource type="PackedScene" uid="uid://c14mwuyiido1d" path="res://Characters/toaster_bot.tscn" id="5_l56ov"]
 [ext_resource type="PackedScene" uid="uid://dpl5rs8wgfeiv" path="res://Levels/ScreenCamera.tscn" id="6_l56ov"]
-[ext_resource type="PackedScene" uid="uid://buwwt7entjhh6" path="res://Characters/shielder.tscn" id="6_nm3vj"]
-[ext_resource type="PackedScene" uid="uid://b1u4qvkor56dm" path="res://Characters/relentless_bot.tscn" id="9_nm3vj"]
+[ext_resource type="PackedScene" uid="uid://cfttxpq5xek8o" path="res://Characters/Circloid/circloid.tscn" id="7_br5ag"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3ptp1"]
 texture = ExtResource("1_ohsd8")
@@ -97,55 +95,17 @@ tile_map_data = PackedByteArray("AADs/+z/AAAAAAMAAADs/+3/AAAAAAAAAADs/+7/AAAAAAE
 tile_set = SubResource("TileSet_nsn4m")
 
 [node name="PlayerIsometric" parent="." instance=ExtResource("2_aeay1")]
+position = Vector2(288, -150)
 dash_ghost_scene = ExtResource("4_br5ag")
 
 [node name="ScreenCamera" parent="." instance=ExtResource("6_l56ov")]
 
 [node name="EnemyContainer" type="Node" parent="."]
 
-[node name="ToasterBot" parent="EnemyContainer" instance=ExtResource("5_l56ov")]
-position = Vector2(69, 306)
+[node name="Circloid" parent="EnemyContainer" instance=ExtResource("7_br5ag")]
 
-[node name="ToasterBot2" parent="EnemyContainer" instance=ExtResource("5_l56ov")]
-position = Vector2(-457, -206)
+[node name="Circloid2" parent="EnemyContainer" instance=ExtResource("7_br5ag")]
 
-[node name="ToasterBot3" parent="EnemyContainer" instance=ExtResource("5_l56ov")]
-position = Vector2(138, -178)
+[node name="Circloid3" parent="EnemyContainer" instance=ExtResource("7_br5ag")]
 
-[node name="ToasterBot4" parent="EnemyContainer" instance=ExtResource("5_l56ov")]
-position = Vector2(-454, 173)
-
-[node name="ToasterBot5" parent="EnemyContainer" instance=ExtResource("5_l56ov")]
-position = Vector2(223, 150)
-
-[node name="ToasterBot6" parent="EnemyContainer" instance=ExtResource("5_l56ov")]
-position = Vector2(-266, -138)
-
-[node name="ToasterBot7" parent="EnemyContainer" instance=ExtResource("5_l56ov")]
-position = Vector2(440, -136)
-
-[node name="ToasterBot8" parent="EnemyContainer" instance=ExtResource("5_l56ov")]
-position = Vector2(466, 258)
-
-[node name="ToasterBot9" parent="EnemyContainer" instance=ExtResource("5_l56ov")]
-position = Vector2(-236, 229)
-
-[node name="ToasterBot10" parent="EnemyContainer" instance=ExtResource("5_l56ov")]
-position = Vector2(-104, -249)
-
-[node name="ShielderBot" parent="EnemyContainer" instance=ExtResource("6_nm3vj")]
-position = Vector2(-525, -269)
-
-[node name="ShielderBot2" parent="EnemyContainer" instance=ExtResource("6_nm3vj")]
-position = Vector2(-525, -38)
-
-[node name="ShielderBot3" parent="EnemyContainer" instance=ExtResource("6_nm3vj")]
-position = Vector2(-529, 240)
-
-[node name="RelentlessBot" parent="EnemyContainer" node_paths=PackedStringArray("player") instance=ExtResource("9_nm3vj")]
-position = Vector2(-361, 92)
-player = NodePath("../../PlayerIsometric")
-
-[node name="RelentlessBot2" parent="EnemyContainer" node_paths=PackedStringArray("player") instance=ExtResource("9_nm3vj")]
-position = Vector2(485, 63)
-player = NodePath("../../PlayerIsometric")
+[node name="Circloid4" parent="EnemyContainer" instance=ExtResource("7_br5ag")]

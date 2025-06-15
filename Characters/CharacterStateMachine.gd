@@ -9,6 +9,9 @@ var current_state : State
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	##connect character's transitioned signal to allow exceptional transitions
+	character.ExceptionalTransition.connect(on_state_transition)
+	
 	## get children under CharacterStateMachine node
 	for child in get_children():
 		##checking if the child is a state
@@ -34,7 +37,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
 	##run state_process of current state
-	current_state.state_process(delta)
+	current_state.state_physics_process(delta)
 	
 func can_move():
 	return current_state.can_move

@@ -117,6 +117,9 @@ animations = [{
 "speed": 8.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_porv4"]
+radius = 21.0238
+
 [sub_resource type="Curve" id="Curve_nwlvs"]
 _limits = [0.0, 100.0, 0.0, 1.0]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.826816, 14.6067), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
@@ -125,21 +128,21 @@ point_count = 3
 [sub_resource type="Gradient" id="Gradient_7pihf"]
 colors = PackedColorArray(0.705882, 0.054902, 0.47451, 1, 1, 1, 1, 0)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_porv4"]
-radius = 4.0
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_55lj8"]
-size = Vector2(12.5, 20)
+size = Vector2(40, 46)
 
 [node name="PlayerIsometric" type="CharacterBody2D" groups=["Player"]]
 collision_layer = 2
-collision_mask = 13
+collision_mask = 9
 script = ExtResource("1_porv4")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_wbcqo")
 animation = &"Idle"
+
+[node name="PhysicsCollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_porv4")
 
 [node name="DashParticles" type="CPUParticles2D" parent="."]
 position = Vector2(2, 4.5)
@@ -165,30 +168,23 @@ color_ramp = SubResource("Gradient_7pihf")
 stream = ExtResource("6_c3bgu")
 
 [node name="GrabberGun_R" parent="." instance=ExtResource("4_ynroq")]
-visible = false
-position = Vector2(18, 2)
-
-[node name="PhysicsCollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 6.5)
-shape = SubResource("CircleShape2D_porv4")
+position = Vector2(40, 0)
 
 [node name="GrabberGun_L" parent="." instance=ExtResource("4_ynroq")]
-visible = false
-position = Vector2(-18, 2)
+position = Vector2(-40, 0)
 
 [node name="DashCollisionArea" type="Area2D" parent="."]
 collision_layer = 32
 collision_mask = 5
 
 [node name="DashCollisionShape" type="CollisionShape2D" parent="DashCollisionArea"]
-position = Vector2(-0.25, 0)
 shape = SubResource("RectangleShape2D_55lj8")
 
 [node name="DashCooldownTimer" type="Timer" parent="."]
 one_shot = true
 
 [node name="DashDurationTimer" type="Timer" parent="."]
-wait_time = 0.25
+wait_time = 0.3
 one_shot = true
 
 [node name="ChargedShotTimer" type="Timer" parent="."]

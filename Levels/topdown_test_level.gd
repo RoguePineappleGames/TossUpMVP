@@ -15,5 +15,5 @@ func _ready() -> void:
 		enemy.EnemyStunned.connect(_on_enemy_stunned)
 	
 	
-func _on_enemy_stunned(enemy: CharacterBody2D) -> void:
+func _on_enemy_stunned(_enemy: CharacterBody2D) -> void:
 	screen_camera.activate_screen_shake(stun_camera_shake, stun_camera_fade)
