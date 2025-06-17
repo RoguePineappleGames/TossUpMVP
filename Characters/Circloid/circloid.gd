@@ -26,7 +26,9 @@ var is_thrown: bool = false
 
 func _physics_process(_delta: float) -> void:
 	state_label.text = str(state_machine.current_state.name)
-	move_and_slide()
+	
+	##DO NOT CALL MOVE AND SLIDE HERE IT WILL FUCK UP EVERYTHING. LET THE STATE THAT NEEDS IT CALL IT
+	#move_and_slide()
 
 func stun() -> void:
 	print("Yo we stunned")

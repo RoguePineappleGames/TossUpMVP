@@ -184,7 +184,7 @@ shape = SubResource("RectangleShape2D_55lj8")
 one_shot = true
 
 [node name="DashDurationTimer" type="Timer" parent="."]
-wait_time = 0.3
+wait_time = 0.2
 one_shot = true
 
 [node name="ChargedShotTimer" type="Timer" parent="."]

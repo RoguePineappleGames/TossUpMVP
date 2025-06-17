@@ -15,3 +15,6 @@ func state_process(_delta) -> void:
 func _on_enemy_thrown(_character: CharacterBody2D) -> void: 
 	Transitioned.emit(self, thrown_state)
 	character.is_grabbed = false
+
+func on_exit() -> void:
+	character.disconnect("EnemyThrown", _on_enemy_thrown)

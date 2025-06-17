@@ -17,6 +17,7 @@ func on_enter():
 
 func state_physics_process(_delta):
 	character.velocity = direction_vector * roaming_speed
+	character.move_and_slide()
 
 func randomize_direction_and_speed() -> void: 
 	direction_vector.x = rng.randf_range(-1, 1)
