@@ -1,5 +1,7 @@
 extends State
 
+class_name GrabbedState
+
 @export var thrown_state: State
 
 @onready var grabbed_sfx: AudioStreamPlayer2D = $GrabbedSFX

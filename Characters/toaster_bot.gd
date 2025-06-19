@@ -1,6 +1,5 @@
 extends CharacterBody2D
 
-class_name Enemy
 
 signal EnemyStunned(enemy: CharacterBody2D)
 signal EnemyGrabbed(enemy: CharacterBody2D)

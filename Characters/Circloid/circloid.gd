@@ -1,19 +1,23 @@
 extends CharacterBody2D
 
+class_name Enemy
+
 signal EnemyStunned(enemy: CharacterBody2D)
 signal EnemyGrabbed(enemy: CharacterBody2D)
 signal EnemyThrown(enemy: CharacterBody2D)
 signal ExceptionalTransition
 
+enum ShapeType {CIRCLOID, TRIANGOLOID, BLOCKOID, RHOMBOID, STAROID}
+
+@export var shape_type: ShapeType
 @export var stun_state: State
+@export var death_state: State
 
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var sprite_shader: ShaderMaterial = animated_sprite_2d.material
 @onready var state_machine: CharacterStateMachine = $StateMachine
 @onready var state_label: Label = $StateLabel
-
-@onready var death_sfx: AudioStreamPlayer2D = $SpecialEffects/DeathSFX
 
 var throw_damage: int = 0
 
@@ -31,14 +35,16 @@ func _physics_process(_delta: float) -> void:
 	#move_and_slide()
 
 func stun() -> void:
-	print("Yo we stunned")
 	ExceptionalTransition.emit(state_machine.current_state, stun_state)
 	EnemyStunned.emit(self)
 	
 func grab() -> void:
-	print("We are grabbed")
 	EnemyGrabbed.emit(self)
 
 func throw(damage: int) -> void:
 	throw_damage = damage
 	EnemyThrown.emit(self)
+
+func die() -> void: 
+	print("I, ", self, "died")
+	ExceptionalTransition.emit(state_machine.current_state, death_state)

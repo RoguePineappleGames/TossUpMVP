@@ -15,6 +15,10 @@ run/main_scene="uid://tyohiw8t7shk"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+ShapeLogic="*res://Characters/ShapeLogic.gd"
+
 [display]
 
 window/size/viewport_width=1280

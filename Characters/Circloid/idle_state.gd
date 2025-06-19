@@ -3,7 +3,6 @@ extends State
 class_name IdleState
 
 @export var roam_state: State
-@export var stun_state: State
 
 @onready var idle_timer: Timer = $IdleTimer
 

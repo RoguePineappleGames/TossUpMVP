@@ -1,5 +1,7 @@
 extends State
 
+class_name StunState
+
 @export var idle_state: State
 @export var grabbed_state: State
 

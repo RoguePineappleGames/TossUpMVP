@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://cfttxpq5xek8o"]
+[gd_scene load_steps=21 format=3 uid="uid://cfttxpq5xek8o"]
 
 [ext_resource type="Script" uid="uid://dg1t8tiqkccdb" path="res://Characters/Circloid/circloid.gd" id="1_5axse"]
 [ext_resource type="Shader" uid="uid://cewkp82msxu6d" path="res://Characters/stun_shader.gdshader" id="2_1wbyv"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://dh8wiepa7ret3" path="res://Characters/Circloid/stun_state.gd" id="10_lexeh"]
 [ext_resource type="Script" uid="uid://bphppgk4njly5" path="res://Characters/Circloid/grabbed_state.gd" id="11_c40ki"]
 [ext_resource type="Script" uid="uid://cdtlr2kwsfhfs" path="res://Characters/Circloid/thrown_state.gd" id="13_mrohl"]
+[ext_resource type="Script" uid="uid://bm86vpaj4bgrs" path="res://Characters/Circloid/death_state.gd" id="13_tldmi"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_si521"]
 resource_local_to_scene = true
@@ -41,10 +42,14 @@ radius = 13.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_qhkhx"]
 radius = 30.0
 
-[node name="Circloid" type="CharacterBody2D" node_paths=PackedStringArray("stun_state") groups=["Enemy"]]
+[sub_resource type="CircleShape2D" id="CircleShape2D_mrohl"]
+radius = 18.0278
+
+[node name="Circloid" type="CharacterBody2D" node_paths=PackedStringArray("stun_state", "death_state") groups=["Enemy"]]
 collision_layer = 4
 script = ExtResource("1_5axse")
 stun_state = NodePath("StateMachine/StunState")
+death_state = NodePath("StateMachine/DeathState")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 3
@@ -60,14 +65,14 @@ collision_layer = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WallCollisionDetector"]
 shape = SubResource("CircleShape2D_qhkhx")
 
-[node name="SpecialEffects" type="Node" parent="."]
+[node name="EnemyDetector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+monitoring = false
 
-[node name="DeathSFX" type="AudioStreamPlayer2D" parent="SpecialEffects"]
-scale = Vector2(2, 2)
-stream = ExtResource("6_dxjf7")
-volume_db = -3.0
-
-[node name="Timers" type="Node" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetector"]
+shape = SubResource("CircleShape2D_mrohl")
+one_way_collision_margin = 0.0
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("character", "initial_state")]
 script = ExtResource("7_d4xg7")
@@ -82,9 +87,9 @@ roam_state = NodePath("../RoamState")
 wait_time = 2.0
 one_shot = true
 
-[node name="RoamState" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state")]
+[node name="RoamState" type="Node" parent="StateMachine" node_paths=PackedStringArray("attack_state")]
 script = ExtResource("9_qhkhx")
-idle_state = NodePath("../IdleState")
+attack_state = NodePath("../AttackState")
 
 [node name="RoamTimer" type="Timer" parent="StateMachine/RoamState"]
 wait_time = 10.0
@@ -93,8 +98,12 @@ one_shot = true
 [node name="DirectionSwapTimer" type="Timer" parent="StateMachine/RoamState"]
 wait_time = 4.0
 
-[node name="AttackState" type="Node" parent="StateMachine"]
+[node name="AttackState" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state")]
 script = ExtResource("8_clel2")
+idle_state = NodePath("../IdleState")
+
+[node name="TransitionTimer" type="Timer" parent="StateMachine/AttackState"]
+one_shot = true
 
 [node name="StunState" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "grabbed_state")]
 script = ExtResource("10_lexeh")
@@ -129,6 +138,14 @@ idle_state = NodePath("../IdleState")
 wait_time = 0.3
 one_shot = true
 
+[node name="DeathState" type="Node" parent="StateMachine"]
+script = ExtResource("13_tldmi")
+
+[node name="DeathSFX" type="AudioStreamPlayer2D" parent="StateMachine/DeathState"]
+scale = Vector2(2, 2)
+stream = ExtResource("6_dxjf7")
+volume_db = -3.0
+
 [node name="StateLabel" type="Label" parent="."]
 texture_filter = 3
 offset_left = -19.0
@@ -139,9 +156,12 @@ theme_override_font_sizes/font_size = 15
 text = "Idle"
 
 [connection signal="body_entered" from="WallCollisionDetector" to="StateMachine/RoamState" method="_on_wall_collision_detector_body_entered"]
+[connection signal="area_entered" from="EnemyDetector" to="StateMachine/ThrownState" method="_on_enemy_detector_area_entered"]
+[connection signal="body_entered" from="EnemyDetector" to="StateMachine/ThrownState" method="_on_enemy_detector_body_entered"]
 [connection signal="timeout" from="StateMachine/IdleState/IdleTimer" to="StateMachine/IdleState" method="_on_idle_timer_timeout"]
 [connection signal="timeout" from="StateMachine/RoamState/RoamTimer" to="StateMachine/RoamState" method="_on_patrol_timer_timeout"]
 [connection signal="timeout" from="StateMachine/RoamState/DirectionSwapTimer" to="StateMachine/RoamState" method="_on_direction_swap_timer_timeout"]
+[connection signal="timeout" from="StateMachine/AttackState/TransitionTimer" to="StateMachine/AttackState" method="_on_transition_timer_timeout"]
 [connection signal="timeout" from="StateMachine/StunState/StunTimer" to="StateMachine/StunState" method="_on_stun_timer_timeout"]
 [connection signal="timeout" from="StateMachine/StunState/StunShaderTimer" to="StateMachine/StunState" method="_on_stun_shader_timer_timeout"]
 [connection signal="timeout" from="StateMachine/ThrownState/TransitionTimer" to="StateMachine/ThrownState" method="_on_transition_timer_timeout"]
