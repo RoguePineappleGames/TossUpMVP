@@ -1,0 +1,159 @@
+[gd_scene load_steps=19 format=3 uid="uid://brqjcse003ph3"]
+
+[ext_resource type="Script" uid="uid://bfrxtwr6tj2lb" path="res://Characters/Triangoloid/triangoloid.gd" id="1_c2dmt"]
+[ext_resource type="Shader" uid="uid://cewkp82msxu6d" path="res://Characters/stun_shader.gdshader" id="2_hcuyp"]
+[ext_resource type="Texture2D" uid="uid://bj28pmjxg3xiq" path="res://Assets/Enemies/Triangloid.png" id="3_hcuyp"]
+[ext_resource type="Script" uid="uid://x3ghic8xbk8c" path="res://Characters/Triangoloid/state_machine.gd" id="4_hcuyp"]
+[ext_resource type="Script" uid="uid://cnei6ku0u3n7m" path="res://Characters/Triangoloid/idle_state.gd" id="5_hcuyp"]
+[ext_resource type="Script" uid="uid://d0auv4dge2t6y" path="res://Characters/Triangoloid/roam_state.gd" id="6_hcuyp"]
+[ext_resource type="Script" uid="uid://cdk87xhptuhqp" path="res://Characters/Triangoloid/attack_state.gd" id="7_hcuyp"]
+[ext_resource type="Script" uid="uid://b2gevthcak0d6" path="res://Characters/Triangoloid/stun_state.gd" id="8_csllv"]
+[ext_resource type="AudioStream" uid="uid://tbhh05dujyno" path="res://Assets/SFX/DashThrough.wav" id="9_nxqey"]
+[ext_resource type="Script" uid="uid://cgwi5j7kba4t1" path="res://Characters/Triangoloid/grabbed_state.gd" id="10_ljrh0"]
+[ext_resource type="AudioStream" uid="uid://ck8jk06hdsw3" path="res://Assets/SFX/Grab.wav" id="11_oeg7q"]
+[ext_resource type="Script" uid="uid://drqxlnc682two" path="res://Characters/Triangoloid/thrown_state.gd" id="12_rfcer"]
+[ext_resource type="Script" uid="uid://2l0cikucwh22" path="res://Characters/Triangoloid/death_state.gd" id="13_hcuyp"]
+[ext_resource type="AudioStream" uid="uid://cbujn8tctmke7" path="res://Assets/SFX/EnemyDeath.wav" id="14_2r10y"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kqp7v"]
+resource_local_to_scene = true
+shader = ExtResource("2_hcuyp")
+shader_parameter/flash_color = Vector3(1, 1, 0.2)
+shader_parameter/flash_strength = 1.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_csllv"]
+atlas = ExtResource("3_hcuyp")
+region = Rect2(0, 0, 33, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1utvx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_csllv")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8cjas"]
+radius = 24.0
+
+[node name="Triangoloid" type="CharacterBody2D" node_paths=PackedStringArray("stun_state", "death_state") groups=["Enemy"]]
+collision_layer = 4
+script = ExtResource("1_c2dmt")
+shape_type = 1
+stun_state = NodePath("StateMachine/StunState")
+death_state = NodePath("StateMachine/DeathState")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 3
+material = SubResource("ShaderMaterial_kqp7v")
+sprite_frames = SubResource("SpriteFrames_1utvx")
+animation = &"Idle"
+
+[node name="PhysicsShape" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(0, -14, 14, 14, -14, 14)
+
+[node name="WallCollisionDetector" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallCollisionDetector"]
+position = Vector2(0, 3)
+shape = SubResource("CircleShape2D_8cjas")
+
+[node name="EnemyDetector" type="Area2D" parent="."]
+position = Vector2(0, 3)
+collision_layer = 0
+collision_mask = 4
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="EnemyDetector"]
+polygon = PackedVector2Array(0, -22, 20, 15, -21, 15)
+one_way_collision_margin = 0.0
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("character", "initial_state")]
+script = ExtResource("4_hcuyp")
+character = NodePath("..")
+initial_state = NodePath("IdleState")
+
+[node name="IdleState" type="Node" parent="StateMachine" node_paths=PackedStringArray("roam_state")]
+script = ExtResource("5_hcuyp")
+roam_state = NodePath("../RoamState")
+
+[node name="IdleTimer" type="Timer" parent="StateMachine/IdleState"]
+wait_time = 2.0
+one_shot = true
+
+[node name="RoamState" type="Node" parent="StateMachine"]
+script = ExtResource("6_hcuyp")
+
+[node name="RoamTimer" type="Timer" parent="StateMachine/RoamState"]
+wait_time = 10.0
+one_shot = true
+
+[node name="DirectionSwapTimer" type="Timer" parent="StateMachine/RoamState"]
+wait_time = 4.0
+
+[node name="AttackState" type="Node" parent="StateMachine"]
+script = ExtResource("7_hcuyp")
+
+[node name="TransitionTimer" type="Timer" parent="StateMachine/AttackState"]
+one_shot = true
+
+[node name="StunState" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state", "grabbed_state")]
+script = ExtResource("8_csllv")
+idle_state = NodePath("../IdleState")
+grabbed_state = NodePath("../GrabbedState")
+
+[node name="StunnedSFX" type="AudioStreamPlayer2D" parent="StateMachine/StunState"]
+scale = Vector2(2, 2)
+stream = ExtResource("9_nxqey")
+
+[node name="StunTimer" type="Timer" parent="StateMachine/StunState"]
+wait_time = 3.0
+one_shot = true
+
+[node name="StunShaderTimer" type="Timer" parent="StateMachine/StunState"]
+wait_time = 0.2
+
+[node name="GrabbedState" type="Node" parent="StateMachine" node_paths=PackedStringArray("thrown_state")]
+script = ExtResource("10_ljrh0")
+thrown_state = NodePath("../ThrownState")
+
+[node name="GrabbedSFX" type="AudioStreamPlayer2D" parent="StateMachine/GrabbedState"]
+scale = Vector2(2, 2)
+stream = ExtResource("11_oeg7q")
+
+[node name="ThrownState" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state")]
+script = ExtResource("12_rfcer")
+idle_state = NodePath("../IdleState")
+
+[node name="TransitionTimer" type="Timer" parent="StateMachine/ThrownState"]
+wait_time = 0.3
+one_shot = true
+
+[node name="DeathState" type="Node" parent="StateMachine"]
+script = ExtResource("13_hcuyp")
+
+[node name="DeathSFX" type="AudioStreamPlayer2D" parent="StateMachine/DeathState"]
+scale = Vector2(2, 2)
+stream = ExtResource("14_2r10y")
+volume_db = -3.0
+
+[node name="StateLabel" type="Label" parent="."]
+texture_filter = 3
+offset_left = -19.0
+offset_top = -41.0
+offset_right = 29.0
+offset_bottom = -16.0
+theme_override_font_sizes/font_size = 15
+text = "Idle"
+
+[connection signal="timeout" from="StateMachine/IdleState/IdleTimer" to="StateMachine/IdleState" method="_on_idle_timer_timeout"]
+[connection signal="timeout" from="StateMachine/RoamState/RoamTimer" to="StateMachine/RoamState" method="_on_patrol_timer_timeout"]
+[connection signal="timeout" from="StateMachine/RoamState/DirectionSwapTimer" to="StateMachine/RoamState" method="_on_direction_swap_timer_timeout"]
+[connection signal="timeout" from="StateMachine/AttackState/TransitionTimer" to="StateMachine/AttackState" method="_on_transition_timer_timeout"]
+[connection signal="timeout" from="StateMachine/StunState/StunTimer" to="StateMachine/StunState" method="_on_stun_timer_timeout"]
+[connection signal="timeout" from="StateMachine/StunState/StunShaderTimer" to="StateMachine/StunState" method="_on_stun_shader_timer_timeout"]
+[connection signal="timeout" from="StateMachine/ThrownState/TransitionTimer" to="StateMachine/ThrownState" method="_on_transition_timer_timeout"]

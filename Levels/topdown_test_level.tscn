@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://tyohiw8t7shk"]
+[gd_scene load_steps=13 format=4 uid="uid://tyohiw8t7shk"]
 
 [ext_resource type="Script" uid="uid://cbvn1dkeneglm" path="res://Levels/topdown_test_level.gd" id="1_br5ag"]
 [ext_resource type="Texture2D" uid="uid://ci46sqlg7fmfh" path="res://Assets/AbstractLevels/PNG/Tiles/Brown tiles/tileBrown_09.png" id="1_ohsd8"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dhlkgcufm8l0s" path="res://Other/ghost.tscn" id="4_br5ag"]
 [ext_resource type="PackedScene" uid="uid://dpl5rs8wgfeiv" path="res://Levels/ScreenCamera.tscn" id="6_l56ov"]
 [ext_resource type="PackedScene" uid="uid://cfttxpq5xek8o" path="res://Characters/Circloid/circloid.tscn" id="7_br5ag"]
+[ext_resource type="PackedScene" uid="uid://brqjcse003ph3" path="res://Characters/Triangoloid/triangoloid.tscn" id="8_l56ov"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3ptp1"]
 texture = ExtResource("1_ohsd8")
@@ -103,9 +104,20 @@ dash_ghost_scene = ExtResource("4_br5ag")
 [node name="EnemyContainer" type="Node" parent="."]
 
 [node name="Circloid" parent="EnemyContainer" instance=ExtResource("7_br5ag")]
+position = Vector2(24, -22)
 
 [node name="Circloid2" parent="EnemyContainer" instance=ExtResource("7_br5ag")]
+position = Vector2(-23, 144)
 
 [node name="Circloid3" parent="EnemyContainer" instance=ExtResource("7_br5ag")]
+position = Vector2(-278, -140)
 
-[node name="Circloid4" parent="EnemyContainer" instance=ExtResource("7_br5ag")]
+[node name="Triangoloid" parent="EnemyContainer" node_paths=PackedStringArray("player") instance=ExtResource("8_l56ov")]
+visible = true
+position = Vector2(287, 189)
+player = NodePath("../../PlayerIsometric")
+
+[node name="Triangoloid2" parent="EnemyContainer" node_paths=PackedStringArray("player") instance=ExtResource("8_l56ov")]
+visible = true
+position = Vector2(-275, 89)
+player = NodePath("../../PlayerIsometric")
