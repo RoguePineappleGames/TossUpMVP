@@ -72,6 +72,14 @@ monitoring = false
 polygon = PackedVector2Array(0, -22, 20, 15, -21, 15)
 one_way_collision_margin = 0.0
 
+[node name="PlayerDetector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitoring = false
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PlayerDetector"]
+polygon = PackedVector2Array(0, -14, -14, 14, 14, 14)
+
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("character", "initial_state")]
 script = ExtResource("4_hcuyp")
 character = NodePath("..")
@@ -85,8 +93,9 @@ roam_state = NodePath("../RoamState")
 wait_time = 2.0
 one_shot = true
 
-[node name="RoamState" type="Node" parent="StateMachine"]
+[node name="RoamState" type="Node" parent="StateMachine" node_paths=PackedStringArray("attack_state")]
 script = ExtResource("6_hcuyp")
+attack_state = NodePath("../AttackState")
 
 [node name="RoamTimer" type="Timer" parent="StateMachine/RoamState"]
 wait_time = 10.0
@@ -95,8 +104,9 @@ one_shot = true
 [node name="DirectionSwapTimer" type="Timer" parent="StateMachine/RoamState"]
 wait_time = 4.0
 
-[node name="AttackState" type="Node" parent="StateMachine"]
+[node name="AttackState" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_state")]
 script = ExtResource("7_hcuyp")
+idle_state = NodePath("../IdleState")
 
 [node name="TransitionTimer" type="Timer" parent="StateMachine/AttackState"]
 one_shot = true
@@ -116,6 +126,10 @@ one_shot = true
 
 [node name="StunShaderTimer" type="Timer" parent="StateMachine/StunState"]
 wait_time = 0.2
+
+[node name="EscapeTimer" type="Timer" parent="StateMachine/StunState"]
+wait_time = 0.4
+one_shot = true
 
 [node name="GrabbedState" type="Node" parent="StateMachine" node_paths=PackedStringArray("thrown_state")]
 script = ExtResource("10_ljrh0")
@@ -150,10 +164,13 @@ offset_bottom = -16.0
 theme_override_font_sizes/font_size = 15
 text = "Idle"
 
+[connection signal="body_entered" from="EnemyDetector" to="StateMachine/ThrownState" method="_on_enemy_detector_body_entered"]
+[connection signal="body_entered" from="PlayerDetector" to="StateMachine/AttackState" method="_on_player_detector_body_entered"]
 [connection signal="timeout" from="StateMachine/IdleState/IdleTimer" to="StateMachine/IdleState" method="_on_idle_timer_timeout"]
 [connection signal="timeout" from="StateMachine/RoamState/RoamTimer" to="StateMachine/RoamState" method="_on_patrol_timer_timeout"]
 [connection signal="timeout" from="StateMachine/RoamState/DirectionSwapTimer" to="StateMachine/RoamState" method="_on_direction_swap_timer_timeout"]
 [connection signal="timeout" from="StateMachine/AttackState/TransitionTimer" to="StateMachine/AttackState" method="_on_transition_timer_timeout"]
 [connection signal="timeout" from="StateMachine/StunState/StunTimer" to="StateMachine/StunState" method="_on_stun_timer_timeout"]
 [connection signal="timeout" from="StateMachine/StunState/StunShaderTimer" to="StateMachine/StunState" method="_on_stun_shader_timer_timeout"]
+[connection signal="timeout" from="StateMachine/StunState/EscapeTimer" to="StateMachine/StunState" method="_on_escape_timer_timeout"]
 [connection signal="timeout" from="StateMachine/ThrownState/TransitionTimer" to="StateMachine/ThrownState" method="_on_transition_timer_timeout"]

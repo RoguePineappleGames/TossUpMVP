@@ -16,12 +16,16 @@ signal PlayerDied
 
 @onready var charged_shot_timer: Timer = $ChargedShotTimer
 @onready var charging_progress_indicator: TextureProgressBar = $ChargingProgressIndicator
+@onready var health_bar: TextureProgressBar = $HealthBar
 
 @onready var dash_cooldown_timer: Timer = $DashCooldownTimer
 @onready var dash_duration_timer: Timer = $DashDurationTimer
 @onready var dash_ghost_life_timer: Timer = $DashGhostLifeTimer
 @onready var dash_particles: CPUParticles2D = $DashParticles
 @onready var dash_sfx: AudioStreamPlayer2D = $DashSFX
+
+
+
 
 var input_vector: Vector2
 var speed = 300
@@ -57,6 +61,8 @@ func _ready() -> void:
 	DashEnded.connect(_on_dash_end)
 	charged_shot_timer.wait_time = charge_time
 	current_health = max_health
+	health_bar.max_value = max_health
+	health_bar.value = current_health
 	
 
 func _physics_process(_delta):
@@ -172,7 +178,7 @@ func adjust_health(amount: int) -> void:
 	current_health += amount
 	print("Health changed by ", amount)
 	current_health = clamp(current_health, 0, max_health)
-	
+	health_bar.value = current_health
 	if current_health <= 0:
 		die()
 		

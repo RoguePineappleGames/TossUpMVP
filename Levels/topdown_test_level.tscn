@@ -113,11 +113,9 @@ position = Vector2(-23, 144)
 position = Vector2(-278, -140)
 
 [node name="Triangoloid" parent="EnemyContainer" node_paths=PackedStringArray("player") instance=ExtResource("8_l56ov")]
-visible = true
 position = Vector2(287, 189)
 player = NodePath("../../PlayerIsometric")
 
 [node name="Triangoloid2" parent="EnemyContainer" node_paths=PackedStringArray("player") instance=ExtResource("8_l56ov")]
-visible = true
 position = Vector2(-275, 89)
 player = NodePath("../../PlayerIsometric")
