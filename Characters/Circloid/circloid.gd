@@ -12,6 +12,7 @@ enum ShapeType {CIRCLOID, TRIANGOLOID, BLOCKOID, RHOMBOID, STAROID}
 @export var shape_type: ShapeType
 @export var stun_state: State
 @export var death_state: State
+@onready var enemy_detector: Area2D = $EnemyDetector
 
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
@@ -27,6 +28,9 @@ var speed: int = 150
 var is_stunned: bool = false
 var is_grabbed: bool = false
 var is_thrown: bool = false
+
+func _ready() -> void:
+	enemy_detector.monitoring = false
 
 func _physics_process(_delta: float) -> void:
 	state_label.text = str(state_machine.current_state.name)

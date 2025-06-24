@@ -8,7 +8,7 @@ signal PlayerDied
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 @onready var physics_collision_shape_2d: CollisionShape2D = $PhysicsCollisionShape2D
-@onready var dash_collision_shape: CollisionShape2D = $DashCollisionArea/DashCollisionShape
+@onready var dash_collision_shape: CollisionPolygon2D = $DashCollisionArea/DashCollisionShape
 
 #2 guns just to handle turning right and left
 @onready var grabber_gun_r: Area2D = $GrabberGun_R
@@ -23,8 +23,6 @@ signal PlayerDied
 @onready var dash_ghost_life_timer: Timer = $DashGhostLifeTimer
 @onready var dash_particles: CPUParticles2D = $DashParticles
 @onready var dash_sfx: AudioStreamPlayer2D = $DashSFX
-
-
 
 
 var input_vector: Vector2

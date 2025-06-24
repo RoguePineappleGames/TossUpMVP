@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://b2khkekf4tyr0"]
+
+[ext_resource type="Script" uid="uid://dmsb8ifrpp0gf" path="res://Characters/Blockoid/laser_beam.gd" id="1_ltagq"]
+
+[node name="LaserBeam" type="RayCast2D"]
+target_position = Vector2(0, 0)
+collision_mask = 3
+script = ExtResource("1_ltagq")
+laser_color = Color(0.196078, 0.47451, 1, 1)
+
+[node name="Line2D" type="Line2D" parent="."]
+begin_cap_mode = 2
+end_cap_mode = 2

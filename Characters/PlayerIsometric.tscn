@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://cl7hl06rnhl0y"]
+[gd_scene load_steps=27 format=3 uid="uid://cl7hl06rnhl0y"]
 
 [ext_resource type="Script" uid="uid://crma7s0q8gpf2" path="res://Characters/player_isometric.gd" id="1_porv4"]
 [ext_resource type="Texture2D" uid="uid://cqck2pkowq637" path="res://Assets/Enemies/Player.png" id="2_pgeca"]
@@ -130,9 +130,6 @@ point_count = 3
 [sub_resource type="Gradient" id="Gradient_7pihf"]
 colors = PackedColorArray(0.705882, 0.054902, 0.47451, 1, 1, 1, 1, 0)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_55lj8"]
-size = Vector2(40, 46)
-
 [node name="PlayerIsometric" type="CharacterBody2D" groups=["Player"]]
 collision_layer = 2
 collision_mask = 9
@@ -179,8 +176,8 @@ position = Vector2(-40, 0)
 collision_layer = 32
 collision_mask = 5
 
-[node name="DashCollisionShape" type="CollisionShape2D" parent="DashCollisionArea"]
-shape = SubResource("RectangleShape2D_55lj8")
+[node name="DashCollisionShape" type="CollisionPolygon2D" parent="DashCollisionArea"]
+polygon = PackedVector2Array(-9, -24, 9, -24, 22, -11, 22, 11, 9, 24, -9, 24, -22, 11, -22, -11)
 
 [node name="DashCooldownTimer" type="Timer" parent="."]
 one_shot = true
