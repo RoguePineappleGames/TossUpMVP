@@ -25,7 +25,7 @@ func return_beam_target() -> Vector2:
 
 func on_exit() -> void:
 	laser_beam.disconnect("Collided", _on_laser_beam_collision)
-	
+	laser_beam.disconnect("LaserShutdown", _on_laser_beam_shutdown)
 	
 func _on_laser_beam_collision(collider: Object) -> void:
 	if collider.is_in_group("Player"):

@@ -1,0 +1,127 @@
+[gd_scene load_steps=12 format=3 uid="uid://dndtelxuti3o4"]
+
+[ext_resource type="Texture2D" uid="uid://ukllqxul1o44" path="res://Assets/UI/UI_orange_buttons_light_3.png" id="1_gwm5j"]
+[ext_resource type="Script" uid="uid://bx2fuvk2dtd6k" path="res://Levels/UI/pause_menu.gd" id="1_yaegi"]
+[ext_resource type="Texture2D" uid="uid://cykicv70t7w4r" path="res://Assets/UI/UI_orange_buttons_light_pressed_3.png" id="2_yaegi"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yaegi"]
+atlas = ExtResource("1_gwm5j")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7yy5a"]
+atlas = ExtResource("2_yaegi")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v8pkj"]
+atlas = ExtResource("1_gwm5j")
+region = Rect2(0, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oou6a"]
+atlas = ExtResource("2_yaegi")
+region = Rect2(0, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x84k2"]
+atlas = ExtResource("1_gwm5j")
+region = Rect2(48, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_80esx"]
+atlas = ExtResource("2_yaegi")
+region = Rect2(48, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_53a32"]
+atlas = ExtResource("1_gwm5j")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n5ts6"]
+atlas = ExtResource("2_yaegi")
+region = Rect2(0, 0, 16, 16)
+
+[node name="PauseMenu" type="Control"]
+process_mode = 2
+custom_minimum_size = Vector2(1280, 720)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource("1_yaegi")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(1280, 720)
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 2
+color = Color(0.0980392, 0.0980392, 0.0980392, 0.435294)
+
+[node name="ButtonContainer" type="HBoxContainer" parent="."]
+texture_filter = 3
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -75.0
+offset_right = 160.0
+offset_bottom = 85.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="PlayButton" type="TextureButton" parent="ButtonContainer"]
+texture_filter = 3
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+texture_normal = SubResource("AtlasTexture_yaegi")
+texture_pressed = SubResource("AtlasTexture_7yy5a")
+stretch_mode = 0
+
+[node name="RetryButton" type="TextureButton" parent="ButtonContainer"]
+texture_filter = 3
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+texture_normal = SubResource("AtlasTexture_v8pkj")
+texture_pressed = SubResource("AtlasTexture_oou6a")
+stretch_mode = 0
+
+[node name="SettingsButton" type="TextureButton" parent="ButtonContainer"]
+texture_filter = 3
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+texture_normal = SubResource("AtlasTexture_x84k2")
+texture_pressed = SubResource("AtlasTexture_80esx")
+stretch_mode = 0
+
+[node name="ExitButton" type="TextureButton" parent="ButtonContainer"]
+texture_filter = 3
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+texture_normal = SubResource("AtlasTexture_53a32")
+texture_pressed = SubResource("AtlasTexture_n5ts6")
+stretch_mode = 0
+
+[connection signal="mouse_entered" from="ButtonContainer/PlayButton" to="." method="_on_play_button_mouse_entered"]
+[connection signal="mouse_exited" from="ButtonContainer/PlayButton" to="." method="_on_play_button_mouse_exited"]
+[connection signal="pressed" from="ButtonContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="mouse_entered" from="ButtonContainer/RetryButton" to="." method="_on_retry_button_mouse_entered"]
+[connection signal="mouse_exited" from="ButtonContainer/RetryButton" to="." method="_on_retry_button_mouse_exited"]
+[connection signal="pressed" from="ButtonContainer/RetryButton" to="." method="_on_retry_button_pressed"]
+[connection signal="mouse_entered" from="ButtonContainer/SettingsButton" to="." method="_on_settings_button_mouse_entered"]
+[connection signal="mouse_exited" from="ButtonContainer/SettingsButton" to="." method="_on_settings_button_mouse_exited"]
+[connection signal="pressed" from="ButtonContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="mouse_entered" from="ButtonContainer/ExitButton" to="." method="_on_exit_button_mouse_entered"]
+[connection signal="mouse_exited" from="ButtonContainer/ExitButton" to="." method="_on_exit_button_mouse_exited"]
+[connection signal="pressed" from="ButtonContainer/ExitButton" to="." method="_on_exit_button_pressed"]

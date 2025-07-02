@@ -10,7 +10,7 @@ var rng = RandomNumberGenerator.new()
 var randomized_offset_to_player:= Vector2.ZERO
 
 func on_enter():
-	randomized_offset_to_player = Vector2(rng.randf_range(-50, 50), rng.randf_range(-25, 25) )
+	randomized_offset_to_player = Vector2(rng.randf_range(-100, 100), rng.randf_range(-100, 100) )
 
 
 func state_physics_process(_delta):

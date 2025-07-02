@@ -1,0 +1,94 @@
+[gd_scene load_steps=12 format=3 uid="uid://bx6l814lyxbj8"]
+
+[ext_resource type="Script" uid="uid://vt6gc7tok8iv" path="res://Levels/Level0/level.gd" id="1_m8h3v"]
+[ext_resource type="PackedScene" uid="uid://dndtelxuti3o4" path="res://Levels/UI/pause_menu.tscn" id="2_1c18g"]
+[ext_resource type="Texture2D" uid="uid://skbkungp2dlu" path="res://Assets/Dimensional_Portal.png" id="3_lxfyd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wk1d3"]
+size = Vector2(4, 5)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_210fc"]
+atlas = ExtResource("3_lxfyd")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8d1y1"]
+atlas = ExtResource("3_lxfyd")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xas43"]
+atlas = ExtResource("3_lxfyd")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dhk5t"]
+atlas = ExtResource("3_lxfyd")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ri68c"]
+atlas = ExtResource("3_lxfyd")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hm30d"]
+atlas = ExtResource("3_lxfyd")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_v8pkj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_210fc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8d1y1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xas43")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dhk5t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ri68c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hm30d")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 7.0
+}]
+
+[node name="Level" type="Node2D"]
+process_mode = 1
+script = ExtResource("1_m8h3v")
+
+[node name="PauseMenu" parent="." instance=ExtResource("2_1c18g")]
+z_index = 8
+offset_left = -642.0
+offset_top = -366.0
+offset_right = 638.0
+offset_bottom = 354.0
+
+[node name="RoomContainer" type="Node" parent="."]
+
+[node name="PortalSpawnPosition" type="Marker2D" parent="."]
+
+[node name="Portal" type="Area2D" parent="."]
+z_index = 5
+scale = Vector2(3, 2)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Portal"]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_wk1d3")
+debug_color = Color(0.875414, 0.16442, 0.741263, 0.42)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Portal"]
+sprite_frames = SubResource("SpriteFrames_v8pkj")
+animation = &"Idle"
+autoplay = "Idle"
+
+[connection signal="ExitButtonPressed" from="PauseMenu" to="." method="_on_pause_menu_exit_button_pressed"]
+[connection signal="RetryButtonPressed" from="PauseMenu" to="." method="_on_pause_menu_retry_button_pressed"]
+[connection signal="SettingsButtonPressed" from="PauseMenu" to="." method="_on_pause_menu_settings_button_pressed"]
+[connection signal="body_entered" from="Portal" to="." method="_on_portal_body_entered"]

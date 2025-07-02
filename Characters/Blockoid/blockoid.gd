@@ -23,13 +23,13 @@ func _physics_process(delta: float) -> void:
 		player_entered_dashingarea2 = false
 
 
-func _on_dashing_area_1_area_entered(area: Area2D) -> void:
+func _on_dashing_area_1_area_entered(_area: Area2D) -> void:
 	player_entered_dashingarea1 = true
 	print("Entered area 1")
 	timeout_timer_area_1.start()
 
 
-func _on_dashing_area_2_area_entered(area: Area2D) -> void:
+func _on_dashing_area_2_area_entered(_area: Area2D) -> void:
 	player_entered_dashingarea2 = true
 	print("Entered area 2")
 	timeout_timer_area_2.start()

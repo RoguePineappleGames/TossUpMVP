@@ -1,10 +1,12 @@
 extends CharacterBody2D
 
-signal DashEnded
+signal PlayerHit
 signal PlayerDied
+signal PlayerPaused
 
 @export var charge_time: float = 3
-@export var dash_ghost_scene: PackedScene
+
+@onready var dash_ghost_scene: PackedScene = preload("res://Other/ghost.tscn")
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 @onready var physics_collision_shape_2d: CollisionShape2D = $PhysicsCollisionShape2D
@@ -56,7 +58,6 @@ func _ready() -> void:
 	grabber_gun_r.visible = false
 	grabber_gun_l.visible = false
 	dash_collision_shape.set_deferred("disabled", true)
-	DashEnded.connect(_on_dash_end)
 	charged_shot_timer.wait_time = charge_time
 	current_health = max_health
 	health_bar.max_value = max_health
@@ -71,8 +72,6 @@ func _physics_process(_delta):
 	
 	if is_dashing:
 		velocity = dash_direction * dash_force
-		#velocity.x *= 1/(1 + (delta * dash_friction))
-		#velocity.y *= 1/(1 + (delta * dash_friction))
 	else:
 		velocity = input_vector * speed
 	
@@ -85,22 +84,20 @@ func update_animation() -> void:
 		animated_sprite_2d.play("Idle")
 
 	elif velocity.x > 0:
-		#if !is_dashing:
-			#animated_sprite_2d.play("Walk")
-		#animated_sprite_2d.flip_h = false
 		active_gun = grabber_gun_r
 
 	elif velocity.x < 0:
-		#if !is_dashing:
-			#animated_sprite_2d.play("Walk")
-		#animated_sprite_2d.flip_h = true
 		active_gun = grabber_gun_l
 
 func _unhandled_input(event: InputEvent) -> void:
 	input_vector = Input.get_vector("Left", "Right", "Up", "Down")
 	
+	if event.is_action_pressed("Pause"):
+		PlayerPaused.emit()
+	
 	if event.is_action_pressed("Dash"):
 		dash()
+	
 	if event.is_action_pressed("Grab"):
 		print("Current gun: ", active_gun)
 		if not active_gun:
@@ -135,8 +132,9 @@ func dash() -> void:
 	print("We are pointing here: ", mouse_position)
 	dash_direction = global_position.direction_to(mouse_position)
 	print("We should dash to: ", dash_direction)
-
-	#set_collision_mask_value(3, false)
+	
+	#toggle invincibility
+	set_collision_layer_value(2, false)
 	dash_collision_shape.set_deferred("disabled", false)
 	
 	#particles emit opposite of dash direction
@@ -146,16 +144,14 @@ func dash() -> void:
 
 func _on_dash_duration_timer_timeout() -> void:
 	_on_dash_end()
-	#DashEnded.emit()
 
 func _on_dash_end() -> void:
 	is_dashing = false
-	#set_collision_mask_value(3, true)
+	set_collision_layer_value(2, true)
 	dash_collision_shape.set_deferred("disabled", true)
 	dash_particles.emitting = false
 	dash_cooldown_timer.start()
 	dash_ghost_life_timer.stop()
-	
 	
 
 func _on_dash_ghost_life_timer_timeout() -> void:
@@ -173,6 +169,8 @@ func _on_dash_collision_area_body_entered(body: Node2D) -> void:
 
 func adjust_health(amount: int) -> void:
 	##positive amount value for healing; negative amount value for taking damage
+	if amount < 0:
+		PlayerHit.emit()
 	current_health += amount
 	print("Health changed by ", amount)
 	current_health = clamp(current_health, 0, max_health)

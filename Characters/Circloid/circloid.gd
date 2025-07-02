@@ -6,6 +6,7 @@ signal EnemyStunned(enemy: CharacterBody2D)
 signal EnemyGrabbed(enemy: CharacterBody2D)
 signal EnemyThrown(enemy: CharacterBody2D)
 signal ExceptionalTransition
+signal EnemyDied(enemy: CharacterBody2D)
 
 enum ShapeType {CIRCLOID, TRIANGOLOID, BLOCKOID, RHOMBOID, STAROID}
 
