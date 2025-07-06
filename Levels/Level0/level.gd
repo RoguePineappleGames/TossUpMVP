@@ -36,6 +36,7 @@ func setup_next_room() -> void:
 	
 	setup_portal(false)
 	rooms_left = rooms_left_array.size()
+	
 	if current_active_room:
 		current_active_room.queue_free()
 		
@@ -51,7 +52,9 @@ func setup_next_room() -> void:
 		next_room_instance.Room_PlayerDied.connect(_on_room_player_died)
 		next_room_instance.Room_PlayerPaused.connect(_on_room_player_paused)
 		
-		current_active_room.start_room()
+		##To avoid issues with calling this function before room is ready, call start_room in room's ready method. 
+		#current_active_room.start_room()
+		#current_active_room.call_deferred("start_room")
 		
 	else:
 		LevelDone.emit()
@@ -87,7 +90,8 @@ func _on_room_player_paused(room_id: int) -> void:
 
 
 func _on_portal_body_entered(body: Node2D) -> void:
-	setup_next_room()
+	##use call_deferred otherwise will cause bugs
+	call_deferred("setup_next_room")
 
 func _on_pause_menu_retry_button_pressed() -> void:
 	restart_current_room()

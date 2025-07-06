@@ -10,6 +10,9 @@ signal EnemyDied(enemy: CharacterBody2D)
 
 enum ShapeType {CIRCLOID, TRIANGOLOID, BLOCKOID, RHOMBOID, STAROID}
 
+const GRAB_SCALING_VALUE: float = 0.5
+const THROW_SCALING_VALUE: float = 1
+
 @export var shape_type: ShapeType
 @export var stun_state: State
 @export var death_state: State
@@ -45,11 +48,17 @@ func stun() -> void:
 	
 func grab() -> void:
 	EnemyGrabbed.emit(self)
+	scale_enemy(GRAB_SCALING_VALUE)
 
-func throw(damage: int) -> void:
-	throw_damage = damage
+func throw(damage: int = 0) -> void:
+	#throw_damage = damage
 	EnemyThrown.emit(self)
+	scale_enemy(THROW_SCALING_VALUE)
 
 func die() -> void: 
 	print("I, ", self, "died")
 	ExceptionalTransition.emit(state_machine.current_state, death_state)
+
+func scale_enemy(scaling_value: float) -> void:
+	scale = Vector2(scaling_value, scaling_value)
+	rotation = 0

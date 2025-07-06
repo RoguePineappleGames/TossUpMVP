@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b3d2ov1r3qrb7" path="res://Levels/Level0/room_0_2.gd" id="1_0won3"]
 [ext_resource type="Texture2D" uid="uid://b38b6k1sx7u6o" path="res://Assets/Tech Dungeon Roguelite - Asset Pack (DEMO)/tileset x1.png" id="2_36bsp"]
-[ext_resource type="PackedScene" uid="uid://cl7hl06rnhl0y" path="res://Characters/PlayerIsometric.tscn" id="3_270yh"]
+[ext_resource type="PackedScene" uid="uid://o1y0uf46cnqv" path="res://Characters/Player/player.tscn" id="3_270yh"]
 [ext_resource type="PackedScene" uid="uid://dpl5rs8wgfeiv" path="res://Levels/ScreenCamera.tscn" id="4_7h07m"]
 [ext_resource type="PackedScene" uid="uid://brqjcse003ph3" path="res://Characters/Triangoloid/triangoloid.tscn" id="5_270yh"]
 

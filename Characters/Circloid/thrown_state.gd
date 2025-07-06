@@ -10,7 +10,6 @@ class_name ThrownState
 func on_enter():
 	character.is_thrown = true
 	enemy_detector.monitoring = true
-	print("We are thrown")
 
 func state_physics_process(delta) -> void:
 	if character.is_thrown == false:

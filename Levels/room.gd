@@ -23,6 +23,8 @@ var player_hit_camera_shake: float = 12
 var enemy_dictionary: Dictionary = {}
 var enemies_left: int = 0
 
+func _ready() -> void:
+	start_room()
 
 func start_room() -> void:
 	setup_player()
@@ -35,7 +37,7 @@ func setup_player() -> void:
 	player.global_position = player_spawn_position.global_position
 	player.PlayerHit.connect(_on_player_hit)
 	player.PlayerDied.connect(_on_player_death)
-	player.PlayerPaused.connect(_on_player_paused)
+#	player.PlayerPaused.connect(_on_player_paused)
 
 func setup_enemies() -> void:
 	for enemy in enemy_container.get_children():

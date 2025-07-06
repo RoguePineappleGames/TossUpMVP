@@ -1,0 +1,132 @@
+[gd_scene load_steps=15 format=3 uid="uid://o1y0uf46cnqv"]
+
+[ext_resource type="Script" uid="uid://id56bgnyq450" path="res://Characters/Player/player.gd" id="1_j341n"]
+[ext_resource type="Texture2D" uid="uid://g5ojqe1ky2ek" path="res://Assets/Player/Player_v2.png" id="2_u2wkb"]
+[ext_resource type="Script" uid="uid://b3mh8uhybvbfc" path="res://Characters/Player/state_machine.gd" id="3_cue0d"]
+[ext_resource type="Script" uid="uid://dfdijqan7rw00" path="res://Characters/Player/move_state.gd" id="5_klx3t"]
+[ext_resource type="Script" uid="uid://cij3a48li8hqw" path="res://Characters/Player/dash_state.gd" id="5_osktb"]
+[ext_resource type="Script" uid="uid://cqlawculmjf8k" path="res://Characters/Player/grab_state.gd" id="6_7vev3"]
+[ext_resource type="Script" uid="uid://dnhqdf0rxjtny" path="res://Characters/Player/throw_state.gd" id="7_7vev3"]
+[ext_resource type="AudioStream" uid="uid://bba2wci3xni8n" path="res://Assets/SFX/Dash.wav" id="7_va6lm"]
+[ext_resource type="Texture2D" uid="uid://dxews7elm4pd7" path="res://Assets/HealthBarBackground.png" id="9_yhol4"]
+[ext_resource type="Texture2D" uid="uid://dpdxos0ff78hl" path="res://Assets/HealthBarProgress.png" id="10_va6lm"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b71o8"]
+atlas = ExtResource("2_u2wkb")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xf5fp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b71o8")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="Curve" id="Curve_va6lm"]
+_limits = [0.0, 100.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.1, 86.5169), 0.0, 0.0, 0, 0, Vector2(0.978947, 100), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_va6lm"]
+radius = 41.0
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 2
+script = ExtResource("1_j341n")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 3
+sprite_frames = SubResource("SpriteFrames_xf5fp")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-8, -22, 8, -22, 20, -10, 20, 10, 8, 22, -8, 22, -20, 10, -20, -10)
+
+[node name="DashCollisionArea" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 5
+
+[node name="DashCollisionShape" type="CollisionPolygon2D" parent="DashCollisionArea"]
+polygon = PackedVector2Array(-9, -24, 9, -24, 22, -11, 22, 11, 9, 24, -9, 24, -22, 11, -22, -11)
+
+[node name="DashParticles" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 10000
+lifetime = 0.2
+emission_shape = 1
+emission_sphere_radius = 20.0
+spread = 10.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 100.0
+initial_velocity_max = 150.0
+damping_curve = SubResource("Curve_va6lm")
+color = Color(1, 0.737255, 1, 0.360784)
+
+[node name="EnemyDetector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetector"]
+shape = SubResource("CircleShape2D_va6lm")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("character", "initial_state")]
+script = ExtResource("3_cue0d")
+character = NodePath("..")
+initial_state = NodePath("MoveState")
+
+[node name="MoveState" type="Node" parent="StateMachine" node_paths=PackedStringArray("dash_state", "grab_state")]
+script = ExtResource("5_klx3t")
+dash_state = NodePath("../DashState")
+grab_state = NodePath("../GrabState")
+
+[node name="DashState" type="Node" parent="StateMachine" node_paths=PackedStringArray("move_state")]
+script = ExtResource("5_osktb")
+move_state = NodePath("../MoveState")
+
+[node name="CooldownTimer" type="Timer" parent="StateMachine/DashState"]
+one_shot = true
+
+[node name="DashDurationTimer" type="Timer" parent="StateMachine/DashState"]
+wait_time = 0.2
+one_shot = true
+
+[node name="DashGhostLifeTimer" type="Timer" parent="StateMachine/DashState"]
+wait_time = 0.05
+
+[node name="DashSFX" type="AudioStreamPlayer2D" parent="StateMachine/DashState"]
+stream = ExtResource("7_va6lm")
+
+[node name="GrabState" type="Node" parent="StateMachine" node_paths=PackedStringArray("move_state", "throw_state")]
+script = ExtResource("6_7vev3")
+move_state = NodePath("../MoveState")
+throw_state = NodePath("../ThrowState")
+
+[node name="ThrowState" type="Node" parent="StateMachine" node_paths=PackedStringArray("move_state")]
+script = ExtResource("7_7vev3")
+move_state = NodePath("../MoveState")
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+texture_filter = 1
+offset_left = -16.0
+offset_top = -39.0
+offset_right = 15.0
+offset_bottom = -23.0
+value = 100.0
+nine_patch_stretch = true
+texture_under = ExtResource("9_yhol4")
+texture_progress = ExtResource("10_va6lm")
+
+[node name="StateLabel" type="Label" parent="."]
+texture_filter = 3
+offset_left = -23.0
+offset_top = -60.0
+offset_right = 24.0
+offset_bottom = -38.0
+theme_override_font_sizes/font_size = 15
+
+[connection signal="body_entered" from="DashCollisionArea" to="StateMachine/DashState" method="_on_dash_collision_area_body_entered"]
+[connection signal="timeout" from="StateMachine/DashState/DashDurationTimer" to="StateMachine/DashState" method="_on_dash_duration_timer_timeout"]
+[connection signal="timeout" from="StateMachine/DashState/DashGhostLifeTimer" to="StateMachine/DashState" method="_on_dash_ghost_life_timer_timeout"]

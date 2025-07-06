@@ -1,6 +1,5 @@
 extends Area2D
 
-#@onready var grab_particles: CPUParticles2D = $GrabParticles
 
 var shoot_force_max: int = 3000
 var shoot_force_min: int = 1000
@@ -38,9 +37,6 @@ func scan_and_grab() -> CharacterBody2D:
 				enemy.grab()
 				has_enemy = true
 				grabbed_enemy = enemy
-				#if enemy.is_grabbed:
-					#has_enemy = true
-					#grabbed_enemy = enemy
 				break
 			else:
 				continue

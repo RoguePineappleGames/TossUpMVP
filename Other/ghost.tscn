@@ -1,11 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://dhlkgcufm8l0s"]
 
-[ext_resource type="Texture2D" uid="uid://cmtevpn03xnmv" path="res://Assets/Bot Wheel/move without FX.png" id="1_8kjqe"]
+[ext_resource type="Texture2D" uid="uid://g5ojqe1ky2ek" path="res://Assets/Player/Player_v2.png" id="1_8kjqe"]
 [ext_resource type="Script" uid="uid://cw3orr8yescdu" path="res://Other/ghost.gd" id="2_dp3ar"]
 
 [node name="Ghost" type="Sprite2D"]
 texture_filter = 3
 texture = ExtResource("1_8kjqe")
-vframes = 8
-frame = 2
 script = ExtResource("2_dp3ar")
