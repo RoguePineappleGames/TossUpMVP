@@ -9,4 +9,6 @@ script = ExtResource("1_jq70r")
 wait_time = 5.0
 autostart = true
 
+[node name="EnemyContainer" type="Node" parent="."]
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

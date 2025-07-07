@@ -6,12 +6,17 @@ signal EnemyStunned(enemy: CharacterBody2D)
 signal EnemyGrabbed(enemy: CharacterBody2D)
 signal EnemyThrown(enemy: CharacterBody2D)
 signal ExceptionalTransition
-signal EnemyDied(enemy: CharacterBody2D)
+signal EnemyDied(enemy: CharacterBody2D, score: int)
 
 enum ShapeType {CIRCLOID, TRIANGOLOID, BLOCKOID, RHOMBOID, STAROID}
 
 const GRAB_SCALING_VALUE: float = 0.5
 const THROW_SCALING_VALUE: float = 1
+
+##for correct matchup kills
+const HIGH_SCORE: int = 100
+##For same-shape kills
+const LOW_SCORE: int = 25
 
 @export var shape_type: ShapeType
 @export var stun_state: State
@@ -32,6 +37,8 @@ var speed: int = 150
 var is_stunned: bool = false
 var is_grabbed: bool = false
 var is_thrown: bool = false
+
+var death_score: int = 0
 
 func _ready() -> void:
 	enemy_detector.monitoring = false
@@ -55,7 +62,8 @@ func throw(damage: int = 0) -> void:
 	EnemyThrown.emit(self)
 	scale_enemy(THROW_SCALING_VALUE)
 
-func die() -> void: 
+func die(score: int) -> void: 
+	death_score = score
 	print("I, ", self, "died")
 	ExceptionalTransition.emit(state_machine.current_state, death_state)
 

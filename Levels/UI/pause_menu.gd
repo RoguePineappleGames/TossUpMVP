@@ -18,23 +18,22 @@ func unpause() -> void:
 	get_tree().paused = false
 	visible = false
 
+func _on_play_button_pressed() -> void:
+	unpause()
+
 func _on_retry_button_pressed() -> void:
 	unpause()
 	RetryButtonPressed.emit()
 
 
 func _on_exit_button_pressed() -> void:
+	unpause()
 	ExitButtonPressed.emit()
 
 
-func _on_play_button_pressed() -> void:
-	unpause()
-
-
 func _on_settings_button_pressed() -> void:
+	unpause()
 	SettingsButtonPressed.emit()
-
-
 
 
 func _on_play_button_mouse_entered() -> void:

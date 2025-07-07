@@ -32,14 +32,11 @@ func _on_enemy_detector_body_entered(body: Node2D) -> void:
 	var other_type = body.shape_type
 	
 	if ShapeLogic.does_shape_beat_shape(my_type, other_type):
-		#print(body)
-		#print(character)
-		body.die()
+		body.die(character.HIGH_SCORE)
 	elif my_type == other_type:
-		body.die()
-		character.die()
+		body.die(character.LOW_SCORE)
+		character.die(character.LOW_SCORE)
 	
 func _on_transition_timer_timeout() -> void:
 	character.is_thrown = false
 	enemy_detector.monitoring = false
-	#Transitioned.emit(self, idle_state)

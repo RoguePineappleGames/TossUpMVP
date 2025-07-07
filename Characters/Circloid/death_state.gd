@@ -5,7 +5,7 @@ class_name DeathState
 @onready var death_sfx: AudioStreamPlayer2D = $DeathSFX
 
 func on_enter():
-	character.EnemyDied.emit(character)
+	character.EnemyDied.emit(character, character.death_score)
 	death_sfx.playing = true
 	await death_sfx.finished
 	character.queue_free()

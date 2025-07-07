@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://o1y0uf46cnqv"]
+[gd_scene load_steps=16 format=3 uid="uid://o1y0uf46cnqv"]
 
 [ext_resource type="Script" uid="uid://id56bgnyq450" path="res://Characters/Player/player.gd" id="1_j341n"]
 [ext_resource type="Texture2D" uid="uid://g5ojqe1ky2ek" path="res://Assets/Player/Player_v2.png" id="2_u2wkb"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://cqlawculmjf8k" path="res://Characters/Player/grab_state.gd" id="6_7vev3"]
 [ext_resource type="Script" uid="uid://dnhqdf0rxjtny" path="res://Characters/Player/throw_state.gd" id="7_7vev3"]
 [ext_resource type="AudioStream" uid="uid://bba2wci3xni8n" path="res://Assets/SFX/Dash.wav" id="7_va6lm"]
+[ext_resource type="Texture2D" uid="uid://cg6bsus48enbf" path="res://Assets/LineTexture.png" id="8_va6lm"]
 [ext_resource type="Texture2D" uid="uid://dxews7elm4pd7" path="res://Assets/HealthBarBackground.png" id="9_yhol4"]
 [ext_resource type="Texture2D" uid="uid://dpdxos0ff78hl" path="res://Assets/HealthBarProgress.png" id="10_va6lm"]
 
@@ -27,7 +28,6 @@ animations = [{
 }]
 
 [sub_resource type="Curve" id="Curve_va6lm"]
-_limits = [0.0, 100.0, 0.0, 1.0]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.1, 86.5169), 0.0, 0.0, 0, 0, Vector2(0.978947, 100), 0.0, 0.0, 0, 0]
 point_count = 3
 
@@ -103,6 +103,15 @@ stream = ExtResource("7_va6lm")
 script = ExtResource("6_7vev3")
 move_state = NodePath("../MoveState")
 throw_state = NodePath("../ThrowState")
+
+[node name="TrajectoryLine" type="Line2D" parent="StateMachine/GrabState"]
+texture_filter = 3
+points = PackedVector2Array(0, 0, 0, 0)
+texture = ExtResource("8_va6lm")
+texture_mode = 1
+joint_mode = 1
+begin_cap_mode = 2
+end_cap_mode = 2
 
 [node name="ThrowState" type="Node" parent="StateMachine" node_paths=PackedStringArray("move_state")]
 script = ExtResource("7_7vev3")
