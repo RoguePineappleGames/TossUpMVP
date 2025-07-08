@@ -6,6 +6,7 @@ signal EnemySpawner_EnemyStunned(enemy: Enemy)
 const CIRCLOID_SCENE = preload("res://Characters/Circloid/circloid.tscn")
 const TRIANGOLOID_SCENE = preload("res://Characters/Triangoloid/triangoloid.tscn")
 const BLOCKOID_SCENE = preload("res://Characters/Blockoid/blockoid.tscn")
+const MAX_CONCURRENT_ENEMIES: int = 10
 
 @export var player: CharacterBody2D
 @export var enemy_container: Node2D
@@ -40,20 +41,25 @@ func _ready() -> void:
 func _on_timer_timeout() -> void:
 	if circloid_allowed:
 		spawn_enemy(CIRCLOID_SCENE)
-		spawn_enemy(CIRCLOID_SCENE)
-
+		#spawn_enemy(CIRCLOID_SCENE)
+	if triangoloid_allowed:
+		spawn_enemy(TRIANGOLOID_SCENE)
+	if blockoid_allowed:
+		spawn_enemy(BLOCKOID_SCENE)
 
 func spawn_enemy(enemy_scene: PackedScene) -> void:
-	var enemy = enemy_scene.instantiate()
-	enemy.EnemyStunned.connect(_on_enemy_stunned)
-	enemy.EnemyDied.connect(_on_enemy_died)
-	if "player" in enemy:
-		enemy.player = player
-	enemy_container.add_child(enemy)
-	enemy.global_position = enemy1_marker.global_position
-	unspawned_enemies_left -= 1
-	enemies_currently_alive += 1
-	
+	if enemies_currently_alive <= MAX_CONCURRENT_ENEMIES:
+		var enemy = enemy_scene.instantiate()
+		enemy.EnemyStunned.connect(_on_enemy_stunned)
+		enemy.EnemyDied.connect(_on_enemy_died)
+		if "player" in enemy:
+			enemy.player = player
+		enemy_container.add_child(enemy)
+		enemy.global_position = enemy1_marker.global_position
+		unspawned_enemies_left -= 1
+		enemies_currently_alive += 1
+	else:
+		print("Too many enemies alive")
 	
 func _on_enemy_stunned(enemy: Enemy) -> void:
 	EnemySpawner_EnemyStunned.emit(enemy)

@@ -5,7 +5,7 @@ class_name Bullet
 @onready var expiry_timer: Timer = $ExpiryTimer
 
 var direction_vector:= Vector2.ZERO
-var damage: int = 1
+var damage: float = 1
 var speed: int = 220
 
 func _physics_process(delta: float) -> void:

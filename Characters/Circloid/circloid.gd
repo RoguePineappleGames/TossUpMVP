@@ -21,13 +21,14 @@ const LOW_SCORE: int = 25
 @export var shape_type: ShapeType
 @export var stun_state: State
 @export var death_state: State
+
+
 @onready var enemy_detector: Area2D = $EnemyDetector
-
-
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var sprite_shader: ShaderMaterial = animated_sprite_2d.material
 @onready var state_machine: CharacterStateMachine = $StateMachine
 @onready var state_label: Label = $StateLabel
+@onready var death_text: RichTextLabel = $DeathText
 
 var throw_damage: int = 0
 
@@ -44,10 +45,14 @@ func _ready() -> void:
 	enemy_detector.monitoring = false
 
 func _physics_process(_delta: float) -> void:
-	state_label.text = str(state_machine.current_state.name)
+	update_state_text()
 	
 	##DO NOT CALL MOVE AND SLIDE HERE IT WILL FUCK UP EVERYTHING. LET THE STATE THAT NEEDS IT CALL IT
 	#move_and_slide()
+
+
+func update_state_text() -> void:
+	state_label.text = str(state_machine.current_state.name)
 
 func stun() -> void:
 	ExceptionalTransition.emit(state_machine.current_state, stun_state)
@@ -57,15 +62,19 @@ func grab() -> void:
 	EnemyGrabbed.emit(self)
 	scale_enemy(GRAB_SCALING_VALUE)
 
-func throw(damage: int = 0) -> void:
+func throw(_damage: int = 0) -> void:
 	#throw_damage = damage
 	EnemyThrown.emit(self)
 	scale_enemy(THROW_SCALING_VALUE)
 
 func die(score: int) -> void: 
 	death_score = score
+	pop_on_death_text()
 	print("I, ", self, "died")
 	ExceptionalTransition.emit(state_machine.current_state, death_state)
+
+func pop_on_death_text() -> void:
+	death_text.text = "[center]" + str(death_score)
 
 func scale_enemy(scaling_value: float) -> void:
 	scale = Vector2(scaling_value, scaling_value)

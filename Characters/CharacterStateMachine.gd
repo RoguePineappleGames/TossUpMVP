@@ -24,7 +24,7 @@ func _ready():
 			child.Transitioned.connect(on_state_transition)
 
 			## DEBUGGING
-			print(child)
+			#print(child)
 			## END DEBUGGING
 			
 		else:

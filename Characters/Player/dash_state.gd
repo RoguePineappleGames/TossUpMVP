@@ -2,7 +2,7 @@ extends State
 
 @export var move_state: State
 
-@onready var cooldown_timer: Timer = $CooldownTimer
+@onready var dash_cooldown_timer: Timer = $DashCooldownTimer
 @onready var dash_duration_timer: Timer = $DashDurationTimer
 @onready var dash_ghost_life_timer: Timer = $DashGhostLifeTimer
 @onready var dash_ghost_scene: PackedScene = preload("res://Other/ghost.tscn")
@@ -14,7 +14,7 @@ var dash_direction:= Vector2.ZERO
 var dash_force: int = 1000
 
 func on_enter() -> void:
-	if not cooldown_timer.is_stopped():
+	if not dash_cooldown_timer.is_stopped():
 		##DASH ON COOLDOWN 
 		Transitioned.emit(self, move_state)
 		return
@@ -34,7 +34,7 @@ func adjust_collision_layers(toggle: bool) -> void:
 	##toggle dash collision shape
 	character.dash_collision_shape.set_deferred("disabled", toggle)
 	
-func state_physics_process(delta) -> void:
+func state_physics_process(_delta) -> void:
 	character.velocity = dash_direction * dash_force
 	character.move_and_slide()
 
@@ -61,11 +61,13 @@ func add_dash_ghost() -> void:
 
 
 func _on_dash_duration_timer_timeout() -> void:
-	Transitioned.emit(self, move_state)
-	dash_particles.emitting = false
-	
-
-func on_exit() -> void:
-	cooldown_timer.start()
+	dash_cooldown_timer.start()
 	dash_ghost_life_timer.stop()
 	adjust_collision_layers(true)
+	dash_particles.emitting = false
+	Transitioned.emit(self, move_state)
+
+#func on_exit() -> void:
+	#dash_cooldown_timer.start()
+	#dash_ghost_life_timer.stop()
+	#adjust_collision_layers(true)

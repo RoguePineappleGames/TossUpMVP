@@ -1,6 +1,6 @@
 extends State
 
-const ATTACK_SPEED: int = 400
+const ATTACK_SPEED: float = 400
 const CONTACT_DAMAGE: int = 1
 
 @export var idle_state: State

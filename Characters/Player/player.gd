@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-signal PlayerHit
+signal PlayerHit()
 signal PlayerDied
 signal ExceptionalTransition
 
@@ -10,29 +10,33 @@ signal ExceptionalTransition
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var dash_collision_shape: CollisionPolygon2D = $DashCollisionArea/DashCollisionShape
 
+@onready var dash_cooldown_timer: Timer = $StateMachine/DashState/DashCooldownTimer
 
 
-var max_health: int = 10
-var current_health: int = 0
+
+
+var max_health: float = 10
+var current_health: float = 0
 var grabbed_enemy: Enemy = null
 
 func _ready() -> void:
 	current_health = max_health
-	health_bar.max_value = max_health
-	health_bar.value = current_health
+	#health_bar.max_value = max_health
+	#health_bar.value = current_health
 	dash_collision_shape.set_deferred("disabled", true)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	state_label.text = str(state_machine.current_state)
 
+func return_remaining_dash_cooldown() -> float:
+	return dash_cooldown_timer.time_left
 
-func adjust_health(amount: int) -> void:
+func adjust_health(amount: float) -> void:
 	##positive amount value for healing; negative amount value for taking damage
-	if amount < 0:
-		PlayerHit.emit()
 	current_health += amount
 	current_health = clamp(current_health, 0, max_health)
-	health_bar.value = current_health
+	if amount < 0:
+		PlayerHit.emit()
 	if current_health <= 0:
 		die()
 		

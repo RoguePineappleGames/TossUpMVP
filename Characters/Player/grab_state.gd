@@ -24,7 +24,7 @@ func grab_enemy(enemy: Enemy) -> void:
 	character.grabbed_enemy = enemy
 	enemy.reparent(character)
 	var tween = create_tween()
-	tween.tween_property(enemy, "position",  Vector2.ZERO, 0.5).set_trans(Tween.TRANS_EXPO)
+	tween.tween_property(enemy, "position",  Vector2.ZERO, 0.4).set_trans(Tween.TRANS_EXPO)
 	await tween.finished
 	start_drawing_line = true
 
@@ -38,13 +38,14 @@ func disable_trajectory_line() -> void:
 	trajectory_line.set_point_position(1, Vector2.ZERO)
 	
 	
-func _unhandled_input(event: InputEvent) -> void:
+func state_input(event: InputEvent) -> void:
 	input_vector = Input.get_vector("Left", "Right", "Up", "Down")
 	
-	if event.is_action_pressed("Grab"):
-		Transitioned.emit(self, throw_state)
+	if start_drawing_line:
+		if event.is_action_pressed("Grab"):
+			Transitioned.emit(self, throw_state)
 
-func state_physics_process(delta) -> void:
+func state_physics_process(_delta) -> void:
 	if start_drawing_line:
 		set_trajectory_line()
 	character.velocity = input_vector * speed
