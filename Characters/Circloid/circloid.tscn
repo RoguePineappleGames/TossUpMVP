@@ -153,14 +153,6 @@ offset_top = -41.0
 offset_right = 29.0
 offset_bottom = -16.0
 theme_override_font_sizes/font_size = 15
-text = "Idle"
-
-[node name="DeathText" type="RichTextLabel" parent="."]
-offset_left = -20.0
-offset_top = -21.0
-offset_right = 20.0
-offset_bottom = 19.0
-bbcode_enabled = true
 
 [connection signal="body_entered" from="WallCollisionDetector" to="StateMachine/RoamState" method="_on_wall_collision_detector_body_entered"]
 [connection signal="body_entered" from="EnemyDetector" to="StateMachine/ThrownState" method="_on_enemy_detector_body_entered"]

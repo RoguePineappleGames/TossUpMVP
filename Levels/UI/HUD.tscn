@@ -30,13 +30,11 @@ layout_mode = 2
 [node name="Score" type="RichTextLabel" parent="HBoxContainer/LeftColumn/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-text = "Lalalalala"
 
 [node name="KillCounter" type="RichTextLabel" parent="HBoxContainer/LeftColumn/VBoxContainer"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 theme_override_font_sizes/bold_italics_font_size = 0
-text = "100"
 
 [node name="HealthBar" type="TextureProgressBar" parent="HBoxContainer/LeftColumn/VBoxContainer"]
 texture_filter = 1
@@ -63,7 +61,7 @@ custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 2
-text = "180
+text = "
 "
 
 [node name="DashCooldown" type="TextureProgressBar" parent="HBoxContainer/RightColumn/VBoxContainer"]

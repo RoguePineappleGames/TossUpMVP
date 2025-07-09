@@ -11,4 +11,9 @@ autostart = true
 
 [node name="EnemyContainer" type="Node" parent="."]
 
+[node name="Label" type="Label" parent="."]
+visible = false
+offset_right = 40.0
+offset_bottom = 23.0
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

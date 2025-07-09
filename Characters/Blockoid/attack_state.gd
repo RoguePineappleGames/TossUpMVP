@@ -29,7 +29,7 @@ func on_exit() -> void:
 	
 func _on_laser_beam_collision(collider: Object) -> void:
 	if collider.is_in_group("Player"):
-		collider.adjust_health(-LASER_DAMAGE)
+		collider.take_damage(LASER_DAMAGE)
 
 func _on_laser_beam_shutdown() -> void:
 	laser_beam.shut_laser_down = false

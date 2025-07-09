@@ -56,7 +56,7 @@ func return_distance_to_last_known_player_position() -> float:
 
 func _on_player_detector_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
-		body.adjust_health(-CONTACT_DAMAGE)
+		body.take_damage(CONTACT_DAMAGE)
 
 func on_exit() -> void:
 	player_detector.monitoring = false

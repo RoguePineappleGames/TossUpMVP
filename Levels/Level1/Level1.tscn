@@ -384,6 +384,7 @@ offset_bottom = 719.0
 
 [node name="HUD" parent="." instance=ExtResource("4_a1y0i")]
 z_index = 20
+mouse_filter = 2
 
 [node name="Player" parent="." instance=ExtResource("2_olbyf")]
 position = Vector2(647, 354)
@@ -399,8 +400,8 @@ player = NodePath("../Player")
 enemy_container = NodePath("../EnemyContainer")
 circloid_allowed = true
 triangoloid_allowed = true
-max_number_of_enemies = 20
-time_between_waves = 2.0
+total_number_of_enemies = 20
+max_concurrent_enemies = 4
 enemy1_marker = NodePath("../EnemySpawnPositions/Marker2D")
 enemy2_marker = NodePath("../EnemySpawnPositions/Marker2D2")
 enemy3_marker = NodePath("../EnemySpawnPositions/Marker2D3")
