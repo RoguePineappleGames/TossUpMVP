@@ -36,6 +36,7 @@ var enemies_currently_alive: int = 0
 func _ready() -> void:
 	unspawned_enemies_left = total_number_of_enemies
 	timer.wait_time = time_between_waves
+	timer.start()
 
 
 func _on_timer_timeout() -> void:

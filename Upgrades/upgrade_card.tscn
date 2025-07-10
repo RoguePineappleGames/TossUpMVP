@@ -1,0 +1,113 @@
+[gd_scene load_steps=9 format=3 uid="uid://cvh608cr3xq"]
+
+[ext_resource type="Script" uid="uid://eskcg7dk0tjv" path="res://Upgrades/upgrade_card.gd" id="1_o6yt0"]
+[ext_resource type="Resource" uid="uid://c2hexflklnw1w" path="res://Upgrades/heal.tres" id="2_qh1pw"]
+[ext_resource type="Texture2D" uid="uid://ofsthg45bc0m" path="res://Assets/UpgradeCard/UpgradeCard_Common.png" id="3_at8r0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qh1pw"]
+size = Vector2(250, 350)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_o6yt0"]
+texture = ExtResource("3_at8r0")
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_qh1pw"]
+size = Vector2(150, 150)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_at8r0"]
+texture = ExtResource("3_at8r0")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_aex3g"]
+texture = ExtResource("3_at8r0")
+
+[node name="UpgradeCard" type="Node2D"]
+position = Vector2(640, 360)
+script = ExtResource("1_o6yt0")
+card_stats = ExtResource("2_qh1pw")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_qh1pw")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(250, 350)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -125.0
+offset_top = -175.0
+offset_right = 125.0
+offset_bottom = 175.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_o6yt0")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="IconMarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+size_flags_stretch_ratio = 5.0
+mouse_filter = 2
+
+[node name="UpgradeIcon" type="Sprite2D" parent="PanelContainer/VBoxContainer/IconMarginContainer"]
+modulate = Color(1, 1, 0, 1)
+texture = SubResource("PlaceholderTexture2D_qh1pw")
+centered = false
+
+[node name="NamePanel" type="PanelContainer" parent="PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_styles/panel = SubResource("StyleBoxTexture_at8r0")
+
+[node name="UpgradeNameLabel" type="RichTextLabel" parent="PanelContainer/VBoxContainer/NamePanel"]
+layout_mode = 2
+mouse_filter = 2
+bbcode_enabled = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DescriptionPanel" type="PanelContainer" parent="PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxTexture_aex3g")
+
+[node name="UpgradeDescriptionLabel" type="RichTextLabel" parent="PanelContainer/VBoxContainer/DescriptionPanel"]
+layout_mode = 2
+mouse_filter = 2
+bbcode_enabled = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DimmingPanel" type="Panel" parent="."]
+self_modulate = Color(1, 1, 1, 0.486275)
+custom_minimum_size = Vector2(254, 354)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -126.5
+offset_top = -175.5
+offset_right = 126.5
+offset_bottom = 175.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

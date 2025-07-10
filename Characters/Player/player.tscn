@@ -8,9 +8,9 @@
 [ext_resource type="Script" uid="uid://cqlawculmjf8k" path="res://Characters/Player/grab_state.gd" id="6_7vev3"]
 [ext_resource type="Script" uid="uid://dnhqdf0rxjtny" path="res://Characters/Player/throw_state.gd" id="7_7vev3"]
 [ext_resource type="AudioStream" uid="uid://bba2wci3xni8n" path="res://Assets/SFX/Dash.wav" id="7_va6lm"]
-[ext_resource type="Texture2D" uid="uid://cg6bsus48enbf" path="res://Assets/LineTexture.png" id="8_va6lm"]
-[ext_resource type="Texture2D" uid="uid://dxews7elm4pd7" path="res://Assets/HealthBarBackground.png" id="9_yhol4"]
-[ext_resource type="Texture2D" uid="uid://dpdxos0ff78hl" path="res://Assets/HealthBarProgress.png" id="10_va6lm"]
+[ext_resource type="Texture2D" uid="uid://cg6bsus48enbf" path="res://Assets/Player/TrajectoryLineTexture.png" id="8_va6lm"]
+[ext_resource type="Texture2D" uid="uid://dxews7elm4pd7" path="res://Assets/Player/HealthBarBackground.png" id="9_yhol4"]
+[ext_resource type="Texture2D" uid="uid://dpdxos0ff78hl" path="res://Assets/Player/HealthBarProgress.png" id="10_va6lm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_b71o8"]
 atlas = ExtResource("2_u2wkb")
@@ -117,6 +117,10 @@ end_cap_mode = 2
 [node name="ThrowState" type="Node" parent="StateMachine" node_paths=PackedStringArray("move_state")]
 script = ExtResource("7_7vev3")
 move_state = NodePath("../MoveState")
+
+[node name="InputDelayTimer" type="Timer" parent="StateMachine/ThrowState"]
+wait_time = 0.1
+one_shot = true
 
 [node name="HealthBar" type="TextureProgressBar" parent="."]
 visible = false

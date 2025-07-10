@@ -2,6 +2,7 @@ extends State
 
 @export var move_state: State
 
+
 var shoot_force_max: int = 3000
 var shoot_force_min: int = 2000
 var force_normalizing_factor: int = 50 
@@ -11,6 +12,7 @@ func on_enter() -> void:
 	shoot(character.grabbed_enemy)
 	character.grabbed_enemy = null
 	Transitioned.emit(self, move_state)
+
 
 func shoot(enemy: Enemy) -> void:
 	var aimed_direction: Vector2 = character.global_position.direction_to(character.get_global_mouse_position())

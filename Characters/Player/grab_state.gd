@@ -11,6 +11,8 @@ var speed: int = 300
 var start_drawing_line: bool = false
 
 func on_enter() -> void:
+	start_drawing_line = false
+	
 	var colliding_enemies = enemy_detector.get_overlapping_bodies()
 	if colliding_enemies:
 		for enemy in colliding_enemies:
@@ -27,6 +29,7 @@ func grab_enemy(enemy: Enemy) -> void:
 	tween.tween_property(enemy, "position",  Vector2.ZERO, 0.4).set_trans(Tween.TRANS_EXPO)
 	await tween.finished
 	start_drawing_line = true
+
 
 func set_trajectory_line() -> void:
 	var mouse_position = character.get_global_mouse_position()

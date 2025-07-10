@@ -6,8 +6,6 @@
 script = ExtResource("1_jq70r")
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 5.0
-autostart = true
 
 [node name="EnemyContainer" type="Node" parent="."]
 

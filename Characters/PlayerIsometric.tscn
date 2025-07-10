@@ -1,15 +1,15 @@
 [gd_scene load_steps=27 format=3 uid="uid://cl7hl06rnhl0y"]
 
 [ext_resource type="Script" uid="uid://crma7s0q8gpf2" path="res://Characters/player_isometric.gd" id="1_porv4"]
-[ext_resource type="Texture2D" uid="uid://cqck2pkowq637" path="res://Assets/Enemies/Player.png" id="2_pgeca"]
-[ext_resource type="Texture2D" uid="uid://cv4xpnuhfa6lo" path="res://Assets/Bot Wheel/wake.png" id="2_ynroq"]
-[ext_resource type="Texture2D" uid="uid://dhyi001ccq6n3" path="res://Assets/Bot Wheel/move with FX.png" id="3_v6d5b"]
+[ext_resource type="Texture2D" uid="uid://cqck2pkowq637" path="res://Assets/Player/Player_v0.png" id="2_pgeca"]
+[ext_resource type="Texture2D" path="res://Assets/Bot Wheel/wake.png" id="2_ynroq"]
+[ext_resource type="Texture2D" path="res://Assets/Bot Wheel/move with FX.png" id="3_v6d5b"]
 [ext_resource type="PackedScene" uid="uid://cdvge3f3l1iks" path="res://Characters/grabber_gun.tscn" id="4_ynroq"]
 [ext_resource type="Texture2D" uid="uid://bjtw2ha1dfwy7" path="res://Assets/ChargingBarUnder.png" id="5_55lj8"]
 [ext_resource type="AudioStream" uid="uid://bba2wci3xni8n" path="res://Assets/SFX/Dash.wav" id="6_c3bgu"]
 [ext_resource type="Texture2D" uid="uid://gwx4aktpguja" path="res://Assets/ChargingBarProgress.png" id="6_qhb0e"]
-[ext_resource type="Texture2D" uid="uid://dxews7elm4pd7" path="res://Assets/HealthBarBackground.png" id="9_6id57"]
-[ext_resource type="Texture2D" uid="uid://dpdxos0ff78hl" path="res://Assets/HealthBarProgress.png" id="10_xxj51"]
+[ext_resource type="Texture2D" uid="uid://dxews7elm4pd7" path="res://Assets/Player/HealthBarBackground.png" id="9_6id57"]
+[ext_resource type="Texture2D" uid="uid://dpdxos0ff78hl" path="res://Assets/Player/HealthBarProgress.png" id="10_xxj51"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_porv4"]
 atlas = ExtResource("2_pgeca")
